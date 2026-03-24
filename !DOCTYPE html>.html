@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programa de Bhaskara</title>
+</head>
+
+<body>
+    <h1>Bhaskara (X1 e X2) </h1>
+    <!-- Programa em HTML e JavaScript para somar 2 números -->
+    <label for="inputValorA">A</label>
+    <input type="number" name="inputValorA" id="inputValorA">
+    <br>
+    <label for="inputValorB">B</label>
+    <input type="number" name="inputValorB" id="inputValorB">
+    <br>
+    <label for="inputValorC">C</label>
+    <input type="number" name="inputValorC" id="inputValorC">
+    <br>
+    <br>
+    <input type="button" value="Baskara da parte X1" onclick="funcaoResponsavelPeloCalculoX1()">
+    <br>
+    <span id="Resp1"> -B + raíz de b² -4 . a . c / 2 . a</span>
+    <br>
+    <input type="button" value="Baskara da parte X2" onclick="funcaoResponsavelPeloCalculoX2()">
+    <br>
+    <span id="Resp2">-B - raíz de b² -4 . a . c / 2 . a</span>
+
+    <script>
+
+        function funcaoResponsavelPeloCalculoX1() {
+            let a1 = parseFloat(document.getElementById("inputValorA").value);
+            let b1 = parseFloat(document.getElementById("inputValorB").value);
+            let c1 = parseFloat(document.getElementById("inputValorC").value);
+            let delta1 = (b1**2) - (4 * a1 * c1);
+            let BaskaraPlus = (-b1 + (Math.sqrt (delta1) ) ) / (2 * a1);
+            document.getElementById("Resp1").innerHTML = BaskaraPlus;
+        }
+
+        function funcaoResponsavelPeloCalculoX2() {
+            let a2 = parseFloat(document.getElementById("inputValorA").value);
+            let b2 = parseFloat(document.getElementById("inputValorB").value);
+            let c2 = parseFloat(document.getElementById("inputValorC").value);
+            let delta2 = (b2**2) - (4 * a2 * c2);
+            let BaskaraMinus = (-b2 - (Math.sqrt (delta2) ) ) / (2 * a2);
+            document.getElementById("Resp2").innerHTML = BaskaraMinus;
+        }
+    </script>
+
+</body>
+
+</html>
