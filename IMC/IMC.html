@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMC</title>
+    <link rel="stylesheet" href="IMC.css">
+</head>
+
+<body>
+
+    <header>
+        Peso Corporal
+    </header>
+
+    <main>
+        <section>
+            <h1>Peso Corporal (IMC)</h1>
+
+            <label for="inputAltura" id="labelDoInputA">Altura (em metros)</label>
+            <input type="number" id="inputAltura">
+
+            <label for="inputPeso" id="labelDoInputA">Peso (em KG)</label>
+            <input type="number" id="inputPeso">
+
+            <button onclick="funcaoPeso()">Calcular</button>
+
+            <div class="resultado">
+                <p><strong>IMC:</strong> <span id="respPeso">0</span></p>
+                
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <span id="mensagem">Preencha os valores e calcule</span>
+    </footer>
+
+    <script src="IMC.js"></script>
+
+</body>
+
+</html>
