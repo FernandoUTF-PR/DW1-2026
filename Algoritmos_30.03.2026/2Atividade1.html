@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Número ao cubo</title>
+    <title>Número ao quadrado</title>
 </head>
 
 <body>
@@ -14,16 +14,16 @@
     <input type="number" name="inputN1" id="inputN1">
     <br>
     <br>
-    <input type="button" value="Ao cubo" onclick="funcaoResponsavelPeloCalculo()">
+    <input type="button" value="Ao Quadrado" onclick="funcaoResponsavelPeloCalculo()">
     <br>
-    <label for="resposta">x³ = </label>
+    <label for="resposta">x² = </label>
     <span id="resposta">?</span>
 
     <script>
         function funcaoResponsavelPeloCalculo() {
             let x = parseFloat(document.getElementById("inputN1").value);
 
-            let s = x ** 3
+            let s = x ** 2
             document.getElementById("resposta").innerHTML = s;
         }
     </script>
