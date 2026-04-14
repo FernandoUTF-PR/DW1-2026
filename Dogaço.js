@@ -10,7 +10,7 @@ function funcaoDelicia() {
     let duploT = (duplo * 26.00);
     let saladaT = (salada * 29.00);
     let R350mlT = (R350mL * 5.00);
-    let R1LT = (R1L * 8.00)
+    let R1LT = (R1L * 8.00);
 
 
 let total = basicoT + duploT + saladaT + R350mlT + R1LT;
