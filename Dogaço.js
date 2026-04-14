@@ -15,10 +15,16 @@ function funcaoDelicia() {
 
 let total = basicoT + duploT + saladaT + R350mlT + R1LT;
 
-    if (total === 0 || total < 0) {
+    if (total === 0 ) {
         footer.classList.add("erro");
         mensagem.innerHTML = "PQ VC QUIS PEDIR EM PRIMEIRO LUGAR";
         document.getElementById("respTotal").innerHTML = "-";
+    }else if (total < 0) {
+        footer.classList.add("erro");
+        mensagem.innerHTML = "VAI TOMAR BEM NO MEIO DO OLHO DO SEU C*";
+        document.getElementById("respTotal").innerHTML = "-";
+    }else if (total < 0) {
+        
     } else if (total > 0) {
 
          mensagem.innerHTML = "Preço total";
