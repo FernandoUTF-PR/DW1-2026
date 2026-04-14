@@ -1,0 +1,2 @@
+Estilize com tags semânticas, padrão de cores predominantemente cinza com um branco,
+ mostre a resposta com o arquivo CSS separado, mostre o CSS e o HTML.

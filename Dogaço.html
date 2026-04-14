@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dogaço</title>
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="Dogaço.CSS">
+</head>
+
+<body>
+
+    <header class="topo">
+        <h1>Lanchonete Pão para toda Obra</h1>
+    </header>
+
+    <main>
+        <section class="cardapio">
+            <h2>Preço dos itens da lanchonete</h2>
+
+            <article class="item">
+                <label for="HotDogBase">Cachorro Quente básico - R$22,00 por unidade</label>
+                <input type="number" id="HotDogBase">
+            </article>
+
+            <article class="item">
+                <label for="HotDogDouble">Cachorro Quente duplo - R$26,00 por unidade</label>
+                <input type="number" id="HotDogDouble">
+            </article>
+
+            <article class="item">
+                <label for="Xsalada">X-Salada - R$29,00 por unidade</label>
+                <input type="number" id="Xsalada">
+            </article>
+
+            <article class="item">
+                <label for="Refri350ml">Refrigerante (350mL) - R$5,00 por unidade</label>
+                <input type="number" id="Refri350ml">
+            </article>
+
+            <article class="item">
+                <label for="Refri1L">Refrigerante (1L) - R$8,00 por unidade</label>
+                <input type="number" id="Refri1L">
+            </article>
+
+            <button class="btn-calcular" onclick="funcaoDelicia()">Calcular o preço</button>
+
+            <div class="resultado">
+                <p><strong>Total:</strong> <span id="respTotal">0</span></p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer" class="rodape">
+        <span id="mensagem">Preencha os valores para calcular</span>
+    </footer>
+
+    <script src="Dogaço.js"></script>
+
+</body>
+
+</html>
