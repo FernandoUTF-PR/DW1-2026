@@ -1,64 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+function funcaoDelicia() {
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dogaço</title>
+    let basico = document.getElementById("HotDogBase").value;
+    let duplo = document.getElementById("HotDogDouble").value;
+    let salada = parseFloat(document.getElementById("Xsalada").value);
+    let R350mL = document.getElementById("Refri350ml").value;
+    let R1L = parseFloat(document.getElementById("Refri1L").value);
 
-    <!-- CSS externo -->
-    <link rel="stylesheet" href="Dogaço.CSS">
-</head>
+    let basicoT = (basico * 22.00);
+    let duploT = (duplo * 26.00);
+    let saladaT = (salada * 29.00);
+    let R350mlT = (R350mL * 5.00);
+    let R1LT = (R1L * 8.00)
 
-<body>
 
-    <header class="topo">
-        <h1>Lanchonete Pão para toda Obra</h1>
-    </header>
+let total = basicoT + duploT + saladaT + R350mlT + R1LT;
 
-    <main>
-        <section class="cardapio">
-            <h2>Preço dos itens da lanchonete</h2>
+    if (total === 0 || total < 0) {
+        footer.classList.add("erro");
+        mensagem.innerHTML = "PQ VC QUIS PEDIR EM PRIMEIRO LUGAR SEU POBRE DO K7";
+        document.getElementById("respTotal").innerHTML = "-";
+    } else if (total > 0) {
 
-            <article class="item">
-                <label for="HotDogBase">Cachorro Quente básico - R$22,00 por unidade</label>
-                <input type="number" id="HotDogBase">
-            </article>
+         mensagem.innerHTML = "Preço total";
+        }
 
-            <article class="item">
-                <label for="HotDogDouble">Cachorro Quente duplo - R$26,00 por unidade</label>
-                <input type="number" id="HotDogDouble">
-            </article>
-
-            <article class="item">
-                <label for="Xsalada">X-Salada - R$29,00 por unidade</label>
-                <input type="number" id="Xsalada">
-            </article>
-
-            <article class="item">
-                <label for="Refri350ml">Refrigerante (350mL) - R$5,00 por unidade</label>
-                <input type="number" id="Refri350ml">
-            </article>
-
-            <article class="item">
-                <label for="Refri1L">Refrigerante (1L) - R$8,00 por unidade</label>
-                <input type="number" id="Refri1L">
-            </article>
-
-            <button class="btn-calcular" onclick="funcaoDelicia()">Calcular o preço</button>
-
-            <div class="resultado">
-                <p><strong>Total:</strong> <span id="respTotal">0</span></p>
-            </div>
-        </section>
-    </main>
-
-    <footer id="footer" class="rodape">
-        <span id="mensagem">Preencha os valores para calcular</span>
-    </footer>
-
-    <script src="Dogaço.js"></script>
-
-</body>
-
-</html>
+        footer.classList.remove("erro");
+        document.getElementById("respTotal").innerHTML = total.toFixed(2);
+    }
