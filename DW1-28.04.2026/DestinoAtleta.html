@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dados Recebidos</title>
+</head>
+
+<body>
+
+    <h1>Dados Recebidos com Sucesso!</h1>
+
+    <p><strong>Nome informado:</strong> <span id="resultadoNome"></span></p>
+    <p><strong>CPF informado:</strong> <span id="resultadoCpf"></span></p>
+    <p><strong>Idade informada:</strong> <span id="resultadoIdade"></span></p>
+    <p><strong>Nome do(a) responsável informado:</strong> <span id="resultadoResponsa"></span></p>
+    <p><strong>Cidade de Origem informado:</strong> <span id="resultadoOrigem"></span></p>
+    <p><strong>Cidade de Destino informado:</strong> <span id="resultadoDestino"></span></p>
+    <p><strong>Modalidade escolhida:</strong> <span id="resultadoModali"></span></p>
+
+    <script>
+        // 1. Pegamos tudo que vem depois do "?" na URL da página
+        var parametrosDaUrl = new URLSearchParams(window.location.search);
+
+        // 2. Extraímos os valores usando os mesmos nomes ('name') que colocamos no formulário
+        var nomeRecebido = parametrosDaUrl.get('nome');
+        var cpfRecebido = parametrosDaUrl.get('cpf');
+        var idadeRecebido = parametrosDaUrl.get('idade');
+        var responsaRecebido = parametrosDaUrl.get('acomp');
+        var origemRecebido = parametrosDaUrl.get('origem');
+        var destinoRecebido = parametrosDaUrl.get('destino');
+        var modalidadeRecebido = parametrosDaUrl.get('esporte');
+
+
+        // 3. Colocamos esses valores nos espaços (<span>) que criamos no HTML acima
+        document.getElementById('resultadoNome').textContent = nomeRecebido;
+        document.getElementById('resultadoCpf').textContent = cpfRecebido;
+        document.getElementById('resultadoIdade').textContent = idadeRecebido;
+        document.getElementById('resultadoResponsa').textContent = responsaRecebido;
+        document.getElementById('resultadoOrigem').textContent = origemRecebido;
+        document.getElementById('resultadoDestino').textContent = destinoRecebido;
+        document.getElementById('resultadoModali').textContent = modalidadeRecebido;
+        
+    </script>
+
+    <br>
+    <a href="index.html">Voltar para o formulário</a>
+
+</body>
+
+</html>
