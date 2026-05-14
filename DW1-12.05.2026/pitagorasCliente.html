@@ -24,9 +24,11 @@
     <span id="respostaDoServidor">.....</span>    
 
     <script>
-        async function enviarMensagem() {            
-            const mensagem1 = parseFloat(document.getElementById('inputMensagem1').value);
-            const mensagem2 = parseFloat(document.getElementById('inputMensagem2').value);
+        async function enviarMensagem() {       
+            const DadosPitagoricas = {     
+             mensagem1 : parseFloat(document.getElementById('inputMensagem1').value),
+             mensagem2 : parseFloat(document.getElementById('inputMensagem2').value),
+            }
             const enderecoServidor = document.getElementById('enderecoServidorInput').value;
             const porta = document.getElementById('inputPorta').value;
             try {
@@ -35,7 +37,8 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ mensagem1 })
+                    body: JSON.stringify({ DadosPitagoricas }),
+                    
                 });
 
                 const data = await response.text();
