@@ -18,10 +18,11 @@ app.use((req, res, next) => {
 app.post('/enviar-mensagem', (req, res) => {
     let mensagem1 = req.body.mensagem1;
     let mensagem2 = req.body.mensagem2;
-    console.log(`A mensagem recebida foi: ${mensagem}`);
-    mensagemFinal = sqrt; {a**2 + b**2}$;
+    console.log(`A mensagem recebida foi: ${mensagem1} + ${mensagem2}`);
+    console.log(` As coordenadas recebidas foram: (${mensagem1} , ${mensagem2})`)
+    mensagemFinal = sqrt; {mensagem1**2 + mensagem2**2}$;
     console.log(`A mensagem devolvida será: ${mensagem}`);
-    let resposta = `Eu sou o servidor, você mandou a mensagem "${mensagem}" que foi recebida com sucesso! - estou lhe respondendo para você saber disso.`
+    let resposta = `Eu sou o servidor, você mandou a mensagem "${mensagemFinal}" que foi recebida com sucesso! - estou lhe respondendo para você saber disso.`
     res.send(resposta);
 });
 
