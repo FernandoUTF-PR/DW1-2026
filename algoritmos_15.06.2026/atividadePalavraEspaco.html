@@ -22,7 +22,7 @@
         function Aalta() {
             let palavra = document.getElementById("inputFrase").value;
             let splitada = palavra.split("");
-            for (let i = 0; i < splitada.length - 1; i++) {
+            for (let i = 0; i < splitada.length; i++) {
                 if (splitada[i] === "a" || splitada[i] === "e" || splitada[i] === "i" ||
                     splitada[i] === "o" || splitada[i] === "u") {
                     splitada[i] = splitada[i].toUpperCase();
