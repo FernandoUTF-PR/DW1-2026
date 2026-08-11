@@ -30,6 +30,6 @@ CREATE TABLE public.produtoPais (
 
 INSERT INTO public.produtoPais (id_capital, nome_pais, quantidade_soldado, quantidade_minima_soldado, quantidade_maxima_soldado) VALUES 
 ('Jerusalém', 'Israel', 25000, 30500, 105000),
-('Washington D.C', 'E.U.A' 30000, 50000, 100000),
+('Washington D.C', 'E.U.A', 30000, 50000, 100000),
 ('Buenos Aires', 'Argentina', 70001, 100001, 105001),
 ('Brasília', 'Brasil', 18001, 20001, 50001);
