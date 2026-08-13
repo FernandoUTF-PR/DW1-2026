@@ -84,6 +84,10 @@ function salvar() {
     }
 
     const nome = document.getElementById("inputNome").value;
+    const modelo = document.getElementById("inputModelo").value;
+    const ano = parseInt(document.getElementById("inputAno").value);
+
+
     //verificar se o que foi digitado pelo USUÁRIO está correto
     if (id && nome && modelo && ano) {// se tudo certo 
         switch (oQueEstaFazendo) {
@@ -131,8 +135,8 @@ function preparaListagem(vetor) {
             linha.id + " - " +
             linha.nome + " - " +
             linha.modelo + " - " +
-            linha.ano + " <br> " ;
-            
+            linha.ano + " <br> ";
+
     }
     return texto;
 }
@@ -238,14 +242,16 @@ function abrirArquivoSalvoEmLocalPermanente() {
 function prepararESalvarCSV() { //gera um arquivo csv com as informações da lista. Vai enviar da memória RAM para dispositivo de armazenamento permanente.
     let nomeDoArquivoDestino = "./Carro.csv";  //define o nome do arquivo csv
     let textoCSV = "";
-     let fimDeLinha = "\n";
+    let fimDeLinha = "\n";
     for (let i = 0; i < listaCarro.length; i++) {
         const linha = listaCarro[i]; //variavel linha contem as informações de cada carro
-         if (i == listaCarro.length - 1) {
+        if (i == listaCarro.length - 1) {
             fimDeLinha = "";
         }
         textoCSV += linha.id + ";" +
-            linha.nome + fimDeLinha;
+            linha.nome + ";" +
+            linha.modelo + ";" +
+            linha.ano + fimDeLinha;
     }
     persistirEmLocalPermanente(nomeDoArquivoDestino, textoCSV);
 }
