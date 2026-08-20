@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 // 1. Listar todos os livros
 app.get('/livros', async (req, res) => {
     try {
-        const query = 'SELECT id_livro, nome_livro, modelo_livro, ano FROM public.livro ORDER BY id_livro';
+        const query = 'SELECT id_livro, nome_livro, genero_livro, ano, autor, paginas FROM public.livro ORDER BY id_livro';
         const result = await pool.query(query);
         res.json({ sucesso: true, livros: result.rows });
     } catch (error) {
@@ -50,7 +50,7 @@ app.get('/livros', async (req, res) => {
 app.get('/livro/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const query = 'SELECT id_livro, nome_livro, modelo_livro, ano FROM public.livro WHERE id_livro = $1';
+        const query = 'SELECT id_livro, nome_livro, genero_livro, ano, autor, paginas FROM public.livro WHERE id_livro = $1';
         const result = await pool.query(query, [id]);
 
         if (result.rows.length === 0) {
@@ -66,9 +66,9 @@ app.get('/livro/:id', async (req, res) => {
 // 3. Inserir livro
 app.post('/livro', async (req, res) => {
     try {
-        const { id_livro, nome_livro, modelo_livro, ano } = req.body;
-        const query = 'INSERT INTO public.livro (id_livro, nome_livro, modelo_livro, ano) VALUES ($1, $2, $3, $4)';
-        await pool.query(query, [id_livro, nome_livro, modelo_livro, ano]);
+        const { id_livro, nome_livro, genero_livro, ano, autor, paginas } = req.body;
+        const query = 'INSERT INTO public.livro (id_livro, nome_livro, genero_livro, ano, autor, paginas) VALUES ($1, $2, $3, $4 ,$5 ,$6)';
+        await pool.query(query, [id_livro, nome_livro, genero_livro, ano, autor, paginas]);
         res.json({ sucesso: true, mensagem: 'Livro inserido com sucesso!' });
     } catch (error) {
         console.error('Erro ao inserir livro:', error);
@@ -80,9 +80,9 @@ app.post('/livro', async (req, res) => {
 app.put('/livro/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { nome_livro, modelo_livro, ano } = req.body;
-        const query = 'UPDATE public.livro SET nome_livro = $1, modelo_livro = $2, ano = $3 WHERE id_livro = $4';
-        await pool.query(query, [nome_livro, modelo_livro, ano, id]);
+        const { nome_livro, genero_livro, ano, autor, paginas } = req.body;
+        const query = 'UPDATE public.livro SET nome_livro = $1, genero_livro = $2, ano = $3 ,autor = $4, paginas = $5 WHERE id_livro = $6';
+        await pool.query(query, [id, nome_livro, genero_livro, ano, autor, paginas]);
         res.json({ sucesso: true, mensagem: 'Livro atualizado com sucesso!' });
     } catch (error) {
         console.error('Erro ao atualizar livro:', error);

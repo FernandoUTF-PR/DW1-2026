@@ -66,15 +66,17 @@ function excluir() {
 async function salvar() {
     let id_livro = livro ? livro.id_livro : parseInt(document.getElementById("inputIDlivro").value);
     const nome_livro = document.getElementById("inputNomeLivro").value;
-    const modelo_livro = document.getElementById("inputModeloLivro").value;
+    const genero_livro = document.getElementById("inputModeloLivro").value;
     const ano = parseInt(document.getElementById("inputAno").value);
+    const pag = parseInt(document.getElementById("inputPag").value);
+    const autor = document.getElementById("inputAutor").value;
 
-    if (!id_livro || !nome_livro || !modelo_livro || !ano) {
+    if (!id_livro || !nome_livro || !genero_livro || !ano || !autor || !pag) {
         alert("Erro nos dados digitados");
         return;
     }
 
-    const dadosLivro = { id_livro, nome_livro, modelo_livro, ano };
+    const dadosLivro = { id_livro, nome_livro, genero_livro, ano, pag, autor };
 
     try {
         if (oQueEstaFazendo === 'inserindo') {
@@ -126,7 +128,7 @@ function preparaListagem(vetor) {
     let texto = "";
     for (let i = 0; i < vetor.length; i++) {
         const linha = vetor[i];
-        texto += `${linha.id_livro} - ${linha.nome_livro} - ${linha.modelo_livro} - ${linha.ano}<br>`;
+        texto += `${linha.id_livro} - ${linha.nome_livro} - ${linha.genero_livro} - ${linha.ano} - ${linha.autor} - ${linha.pag}<br>`;
     }
     return texto || "Nenhum livro cadastrado.";
 }
@@ -145,8 +147,10 @@ function mostrarAviso(mensagem) {
 function mostrarDadosLivro(livro) {
     document.getElementById("inputIDlivro").value = livro.id_livro;
     document.getElementById("inputNomeLivro").value = livro.nome_livro;
-    document.getElementById("inputModeloLivro").value = livro.modelo_livro;
+    document.getElementById("inputModeloLivro").value = livro.genero_livro;
     document.getElementById("inputAno").value = livro.ano;
+    document.getElementById("inputAutor").value = livro.autor;
+    document.getElementById("inputPag").value = livro.pag;
     bloquearAtributos(true);
 }
 
@@ -155,6 +159,8 @@ function limparAtributos() {
     document.getElementById("inputNomeLivro").value = "";
     document.getElementById("inputModeloLivro").value = "";
     document.getElementById("inputAno").value = "";
+    document.getElementById("inputAutor").value = "";
+    document.getElementById("inputPag").value = "";
     bloquearAtributos(true);
 }
 
@@ -163,6 +169,8 @@ function bloquearAtributos(soLeitura) {
     document.getElementById("inputNomeLivro").readOnly = soLeitura;
     document.getElementById("inputModeloLivro").readOnly = soLeitura;
     document.getElementById("inputAno").readOnly = soLeitura;
+    document.getElementById("inputAutor").readOnly = soLeitura;
+    document.getElementById("inputPag").readOnly = soLeitura;
 }
 
 function visibilidadeDosBotoes(btProcure, btInserir, btAlterar, btExcluir, btSalvar) {

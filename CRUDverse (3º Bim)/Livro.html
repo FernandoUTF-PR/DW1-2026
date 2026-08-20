@@ -13,21 +13,27 @@
     <div class="container">
         <h1>Cadastro de Carro</h1>
 
-        <label for="inputId_carro">ID do Livro</label>
+        <label for="inputIDlivro">ID do Livro</label>
         <input type="text" name="inputIDlivro" id="inputIDlivro">
         <input type="button" value="Procure" id="btProcure" onclick="procure()" style="display:inline;">
         <input type="button" value="Inserir" id="btInserir" onclick="inserir()" style="display:none;">
         <input type="button" value="Alterar" id="btAlterar" onclick="alterar()" style="display:none;">
         <input type="button" value="Excluir" id="btExcluir" onclick="excluir()" style="display:none;">
 
-        <label for="inputNomeLivro">Nome do Livro</label>
+        <label for="inputNomeLivro">Título do Livro</label>
         <input type="text" name="inputNomeLivro" id="inputNomeLivro">
 
-        <label for="inputModeloLivro">Modelo do Livro </label>
+        <label for="inputModeloLivro">Gênero do Livro </label>
         <input type="text" name="inputModeloLivro" id="inputModeloLivro">
 
         <label for="inputAno">Ano</label>
         <input type="number" name="inputAno" id="inputAno">
+
+        <label for="inputAutor">Autor(a)</label>
+        <input type="text" name="inputAutor" id="inputAutor">
+
+        <label for="inputPag">Páginas</label>
+        <input type="number" name="inputPag" id="inputPag">
 
         <div id="divAviso">Informe o ID e clique em Procure</div>
 
