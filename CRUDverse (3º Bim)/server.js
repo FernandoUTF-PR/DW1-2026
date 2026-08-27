@@ -81,7 +81,7 @@ app.put('/livro/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { nome_livro, genero_livro, ano, autor, paginas } = req.body;
-        const query = 'UPDATE public.livro SET nome_livro = $1, genero_livro = $2, ano = $3 ,autor = $4, paginas = $5 WHERE id_livro = $6';
+        const query = 'UPDATE public.livro SET id_livro = $1, nome_livro = $2, genero_livro = $3, ano = $4 ,autor = $5, paginas = $6 WHERE id_livro = $1';
         await pool.query(query, [id, nome_livro, genero_livro, ano, autor, paginas]);
         res.json({ sucesso: true, mensagem: 'Livro atualizado com sucesso!' });
     } catch (error) {
