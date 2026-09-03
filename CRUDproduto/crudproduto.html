@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD - Banco de Dados</title>
+    <link rel="stylesheet" href="crudproduto.css">
+</head>
+
+<body onload="listar()">
+
+    <div class="container">
+        <h1>Cadastro de produtos</h1>
+
+        <label for="inputRAaluno">ID do produto</label>
+        <input type="text" name="inputRAluno" id="inputRAaluno">
+        <input type="button" value="Procure" id="btProcure" onclick="procure()" style="display:inline;">
+        <input type="button" value="Inserir" id="btInserir" onclick="inserir()" style="display:none;">
+        <input type="button" value="Alterar" id="btAlterar" onclick="alterar()" style="display:none;">
+        <input type="button" value="Excluir" id="btExcluir" onclick="excluir()" style="display:none;">
+<br>
+        <label for="inputNomeAluno">Nome do aluno</label>
+        <input type="text" name="inputNomeAluno" id="inputNomeAluno">
+<br>
+        <label for="inputDataNasc">Data de Nascimento </label>
+        <input type="date" name="inputDataNasc" id="inputDataNasc">
+<br>
+        <label for="inputEmail">email</label>
+        <input type="text" name="inputEmail" id="inputEmail">
+<br>
+        <label for="inputTelefone">Telefone</label>
+        <input type="text" name="inputTelefone" id="inputTelefone">
+<br>
+        <label for="inputCurso">Curso</label>
+        <input type="text" name="inputCurso" id="inputCurso">
+<br>
+        <div id="divAviso">Informe o RA e clique em Procure</div>
+<br>
+        <input type="button" value="Salvar" id="btSalvar" onclick="salvar()" style="display:none;">
+        <input type="button" value="Cancelar" id="btCancelar" onclick="cancelarOperacao()" style="display:none;">
+
+        <h3>Alunos Cadastrados:</h3>
+        <div id="outputSaida">Carregando...</div>
+    </div>
+
+
+    <script src="./crudprodutoControle.js"></script>
+</body>
+
+</html>

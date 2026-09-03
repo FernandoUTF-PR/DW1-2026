@@ -150,7 +150,13 @@ function mostrarAviso(mensagem) {
 function mostrarDadosAluno(aluno) {
     document.getElementById("inputRAaluno").value = aluno.ra_aluno;
     document.getElementById("inputNomeAluno").value = aluno.nome_completo;
-    document.getElementById("inputDataNasc").value = aluno.data_nasc;
+
+    if (aluno.data_nasc) {
+        document.getElementById("inputDataNasc").value = aluno.data_nasc.split('T')[0];
+    }
+    else{
+        document.getElementById("inputDataNasc").value = "";
+    }
     document.getElementById("inputEmail").value = aluno.email;
     document.getElementById("inputTelefone").value = aluno.telefone;
     document.getElementById("inputCurso").value = aluno.curso;

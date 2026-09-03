@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS public.aluno;
 CREATE TABLE public.aluno (
     ra_aluno INTEGER PRIMARY KEY,
     nome_completo VARCHAR(80) NOT NULL,
-    TO_CHAR(data_nasc, 'DD/MM/YYYY') AS data_nasc,
+    data_nasc DATE,
     email VARCHAR(50),
     telefone VARCHAR (15),
     curso VARCHAR(40)
