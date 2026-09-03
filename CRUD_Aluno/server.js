@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 
 // --- ROTAS DO CRUD DE CARROS ---
 
-// 1. Listar todos os livros
+// 1. Listar todos
 app.get('/alunos', async (req, res) => {
     try {
         const query = 'SELECT ra_aluno, nome_completo, data_nasc, email, telefone, curso FROM public.aluno ORDER BY ra_aluno';
@@ -46,7 +46,7 @@ app.get('/alunos', async (req, res) => {
     }
 });
 
-// 2. Buscar livro por ID (PK)
+// 2. Buscar por ID (PK)
 app.get('/aluno/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -54,7 +54,7 @@ app.get('/aluno/:id', async (req, res) => {
         const result = await pool.query(query, [id]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ sucesso: false, mensagem: 'Aluno não encontrado com este ID' });
+            return res.status(404).json({ sucesso: false, mensagem: 'Aluno não encontrado com este RA' });
         }
         res.json({ sucesso: true, aluno: result.rows[0] });
     } catch (error) {
@@ -63,7 +63,7 @@ app.get('/aluno/:id', async (req, res) => {
     }
 });
 
-// 3. Inserir livro
+// 3. Inserir 
 app.post('/aluno', async (req, res) => {
     try {
         const { ra_aluno, nome_completo, data_nasc, email, telefone, curso } = req.body;
@@ -76,12 +76,12 @@ app.post('/aluno', async (req, res) => {
     }
 });
 
-// 4. Alterar livro
+// 4. Alterar 
 app.put('/aluno/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { ra_aluno, nome_completo, data_nasc, email, telefone, curso} = req.body;
-        const query = 'UPDATE public.livro SET ra_aluno = $1, nome_completo = $2, data_nasc = $3, email = $4 ,telefone = $5, curso = $6 WHERE ra_aluno = $1';
+        const query = 'UPDATE public.aluno SET ra_aluno = $1, nome_completo = $2, data_nasc = $3, email = $4 ,telefone = $5, curso = $6 WHERE ra_aluno = $1';
         await pool.query(query, [ra_aluno, nome_completo, data_nasc, email, telefone, curso]);
         res.json({ sucesso: true, mensagem: 'Aluno atualizado com sucesso!' });
     } catch (error) {
@@ -90,7 +90,7 @@ app.put('/aluno/:id', async (req, res) => {
     }
 });
 
-// 5. Excluir livro
+// 5. Excluir 
 app.delete('/aluno/:id', async (req, res) => {
     try {
         const { id } = req.params;

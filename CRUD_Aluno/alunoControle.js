@@ -7,7 +7,7 @@ bloquearAtributos(true);
 // Busca no Banco de Dados via API
 async function procurePorChavePrimaria(chave) {
     try {
-        const resposta = await fetch(`${URL_API}/livro/${chave}`);
+        const resposta = await fetch(`${URL_API}/aluno/${chave}`);
         const data = await resposta.json();
         if (data.sucesso) {
             return data.aluno;
@@ -30,7 +30,7 @@ async function procure() {
 
     aluno = await procurePorChavePrimaria(ra_aluno);
     if (aluno) {
-        mostrarDadosLivro(aluno);
+        mostrarDadosAluno(aluno);
         visibilidadeDosBotoes('inline', 'none', 'inline', 'inline', 'none');
         mostrarAviso("Achou no banco, pode alterar ou excluir");
     } else {
@@ -129,7 +129,9 @@ function preparaListagem(vetor) {
     let texto = "";
     for (let i = 0; i < vetor.length; i++) {
         const linha = vetor[i];
-        texto += `${linha.ra_aluno} - ${linha.nome_completo} - ${linha.data_nasc} - ${linha.email} - ${linha.telefone} - ${linha.curso}<br>`;
+        const data = new Date (linha.data_nasc);
+        const dataFormatada = data.toLocaleDateString('pt-BR');
+        texto += `${linha.ra_aluno} - ${linha.nome_completo} - ${dataFormatada} - ${linha.email} - ${linha.telefone} - ${linha.curso}<br>`;
     }
     return texto || "Nenhum aluno cadastrado.";
 }
@@ -145,7 +147,7 @@ function mostrarAviso(mensagem) {
     document.getElementById("divAviso").innerHTML = mensagem;
 }
 
-function mostrarDadosLivro(livro) {
+function mostrarDadosAluno(aluno) {
     document.getElementById("inputRAaluno").value = aluno.ra_aluno;
     document.getElementById("inputNomeAluno").value = aluno.nome_completo;
     document.getElementById("inputDataNasc").value = aluno.data_nasc;
@@ -181,5 +183,5 @@ function visibilidadeDosBotoes(btProcure, btInserir, btAlterar, btExcluir, btSal
     document.getElementById("btExcluir").style.display = btExcluir;
     document.getElementById("btSalvar").style.display = btSalvar;
     document.getElementById("btCancelar").style.display = btSalvar;
-    document.getElementById("inputIDlivro").focus();
+    document.getElementById("inputRAaluno").focus();
 }
