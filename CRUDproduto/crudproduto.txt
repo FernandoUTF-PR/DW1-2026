@@ -1,6 +1,6 @@
-Continuar alterando o HTML
-Adicionar CSS
-Adicionar as 2 partes de JS (server e controle)
-Configurar o PGadmin
+(Feito) Continuar alterando o HTML
+(Feito) Adicionar CSS
+(Feito) Adicionar as 2 partes de JS (server e controle)
+(???) Configurar o PGadmin
 
 (opcional: perguntar para o Radames se encontrar um erro difícil de resolver, pois a IA é burra).
