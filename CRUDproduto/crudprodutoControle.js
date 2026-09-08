@@ -70,7 +70,7 @@ async function salvar() {
     const peso = document.getElementById("inputPeso").value;
 
 
-    if (!id_produto|| !nome_produto || !tamanho || !peso) {
+    if (!id_produto || !nome_produto || !tamanho || !peso) {
         alert("Erro nos dados digitados");
         return;
     }
@@ -114,7 +114,6 @@ async function listar() {
         
         const resposta = await fetch(`${URL_API}/produtos`);
         const data = await resposta.json();
-        alert (JSON.stringify(data))
         if (data.sucesso) {
             document.getElementById("outputSaida").innerHTML = preparaListagem(data.produtos);
         } else {
@@ -128,7 +127,7 @@ async function listar() {
 function preparaListagem(vetor) {
     let texto = "";
     for (let i = 0; i < vetor.length; i++) {
-
+let linha = vetor[i];
         texto += `${linha.id_produto} - ${linha.nome_produto} - ${linha.tamanho} - ${linha.peso}<br>`;
     }
     return texto || "Nenhum produto cadastrado.";
