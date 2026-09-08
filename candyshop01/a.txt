@@ -1,0 +1,3 @@
+Terminar Cargo e Pagamento (HTML, CSS e JS)
+Parou Pagamento na linha 34;
+Testar servidor
