@@ -1,6 +1,26 @@
 -- ============================================
 -- 1. CRIAÇÃO DAS TABELAS (ORDEM CORRETA)
 -- ============================================
+DROP TABLE IF EXISTS
+    pagamento_has_forma_pagamento,
+    pedido_has_produto,
+    pagamento,
+    pedido,
+    funcionario,
+    cliente,
+    produto,
+    forma_pagamento,
+    unidade_medida,
+    cargo,
+    pessoa
+CASCADE;
+
+DROP SEQUENCE IF EXISTS
+    cargo_id_cargo_seq,
+    forma_pagamento_id_forma_pagamento_seq,
+    pedido_id_pedido_seq,
+    produto_id_produto_seq
+CASCADE;
 
 -- Tabelas sem dependências (primeiro)
 CREATE TABLE public.pessoa (

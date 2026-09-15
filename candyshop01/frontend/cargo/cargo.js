@@ -6,7 +6,7 @@ bloquearAtributos(true);
 
 async function procurePorChavePrimaria(chave) {
     try {
-        const resposta = await fetch(`${URL_API}/pagamento/${chave}`);
+        const resposta = await fetch(`${URL_API}/cargo/${chave}`);
         const data = await resposta.json();
         return data.sucesso ? data.pagamentos : null;
     } catch (erro) {
@@ -15,14 +15,14 @@ async function procurePorChavePrimaria(chave) {
 }
 
 async function procure() {
-    const id_forma_pagamento = document.getElementById("inputId_forma_pagamento").value.trim().toUpperCase();
-    if (!id_forma_pagamento) {
+    const id_cargo = document.getElementById("inputID_cargo").value.trim().toUpperCase();
+    if (!id_cargo) {
         mostrarAviso("Deve conter pagamento, seu caloteiro / ladrão.");
         return;
     }
 
-    document.getElementById("inputId_forma_pagamento").value = id_forma_pagamento;
-    formaPagamento = await procurePorChavePrimaria(id_forma_pagamento);
+    document.getElementById("inputID_cargo").value = id_cargo;
+    formaPagamento = await procurePorChavePrimaria(id_cargo);
     oQueEstaFazendo = '';
     
     if (formaPagamento) {
@@ -40,14 +40,14 @@ function inserir() {
     bloquearAtributos(false);
     visibilidadeDosBotoes('none', 'none', 'none', 'none', 'inline');
     oQueEstaFazendo = 'inserindo';
-    mostrarAviso("INSERINDO - Digite o nome do pagamento e clique em salvar");
+    mostrarAviso("INSERINDO - Digite o Nome do pagamento e clique em salvar");
 }
 
 function alterar() {
     bloquearAtributos(false);
     visibilidadeDosBotoes('none', 'none', 'none', 'none', 'inline');
     oQueEstaFazendo = 'alterando';
-    mostrarAviso("ALTERANDO - Digite o novo nome e clique em salvar");
+    mostrarAviso("ALTERANDO - Digite o novo Nome e clique em salvar");
 }
 
 function excluir() {
@@ -58,10 +58,10 @@ function excluir() {
 }
 
 async function salvar() {
-    const id_forma_pagamento = document.getElementById("inputId_forma_pagamento").value;
-    const nome_forma_pagamento = document.getElementById("inputnome_forma_pagamento").value;
+    const id_cargo = document.getElementById("inputID_cargo").value;
+    const nome_cargo = document.getElementById("inputNome_cargo").value;
 
-    const dadosPagamento = { id_forma_pagamento, nome_forma_pagamento };
+    const dadosPagamento = { id_cargo, nome_cargo };
 
     try {
         if (oQueEstaFazendo === 'inserindo') {
@@ -70,12 +70,12 @@ async function salvar() {
             if (!data.sucesso) return mostrarAviso(data.mensagem);
             mostrarAviso("Inserido no Banco de Dados com sucesso!");
         } else if (oQueEstaFazendo === 'alterando') {
-            const resp = await fetch(`${URL_API}/pagamento/${id_forma_pagamento}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosPagamento) });
+            const resp = await fetch(`${URL_API}/pagamento/${id_cargo}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosPagamento) });
             const data = await resp.json();
             if (!data.sucesso) return mostrarAviso(data.mensagem);
             mostrarAviso("Alterado no Banco de Dados com sucesso!");
         } else if (oQueEstaFazendo === 'excluindo') {
-            const resposta = await fetch(`${URL_API}/pagamento/${id_forma_pagamento}`, { method: 'DELETE' });
+            const resposta = await fetch(`${URL_API}/pagamento/${id_cargo}`, { method: 'DELETE' });
             const data = await resposta.json();
             if (!data.sucesso) {
                 mostrarAviso(data.mensagem || "Erro ao excluir no servidor.");
@@ -86,7 +86,7 @@ async function salvar() {
 
         visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');
         limparAtributos();
-        document.getElementById("inputId_forma_pagamento").value = "";
+        document.getElementById("inputID_cargo").value = "";
         listar();
     } catch (erro) {
         mostrarAviso("Erro ao efetuar operação no servidor.");
@@ -101,7 +101,7 @@ async function listar() {
         if (data.sucesso) {
             let texto = "";
             for (let linha of data.pagamentos) {
-                texto += `<b>[${linha.id_forma_pagamento}]</b> - ${linha.nome_forma_pagamento}<br>`;
+                texto += `<b>[${linha.id_cargo}]</b> - ${linha.Nome_cargo}<br>`;
             }
             document.getElementById("outputSaida").innerHTML = texto || "Nenhuma forma de pagamento cadastrado.";
         } else {
@@ -125,21 +125,21 @@ function mostrarAviso(mensagem) {
 }
 
 function mostrarDadosPagamento(u) {
-    document.getElementById("inputId_forma_pagamento").value = u.id_forma_pagamento;
-    document.getElementById("inputnome_forma_pagamento").value = u.nome_forma_pagamento;
+    document.getElementById("inputID_cargo").value = u.id_cargo;
+    document.getElementById("inputNome_cargo").value = u.nome_cargo;
     bloquearAtributos(true);
 }
 
 function limparAtributos() {
     formaPagamento = null;
     oQueEstaFazendo = '';
-    document.getElementById("inputnome_forma_pagamento").value = "";
+    document.getElementById("inputNome_cargo").value = "";
     bloquearAtributos(true);
 }
 
 function bloquearAtributos(soLeitura) {
-    document.getElementById("inputId_forma_pagamento").readOnly = !soLeitura;
-    document.getElementById("inputnome_forma_pagamento").readOnly = soLeitura;
+    document.getElementById("inputID_cargo").readOnly = !soLeitura;
+    document.getElementById("inputNome_cargo").readOnly = soLeitura;
 }
 
 function visibilidadeDosBotoes(btP, btI, btA, btE, btS) {
