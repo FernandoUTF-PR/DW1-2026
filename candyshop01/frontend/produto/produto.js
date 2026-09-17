@@ -81,7 +81,7 @@ async function procurePorChavePrimaria(chave) {
 }
 
 async function procure() {
-    const id_produto = document.getElementById("inputId_produto").value;
+    const id_produto = document.getElementById("inputID_produto").value;
     if (isNaN(id_produto) || !Number.isInteger(Number(id_produto)) || id_produto === "") {
         mostrarAviso("Precisa ser um número inteiro");
         return;
@@ -125,7 +125,7 @@ function excluir() {
 }
 
 async function salvar() {
-    let id_produto = document.getElementById("inputId_produto").value;
+    let id_produto = document.getElementById("inputID_produto").value;
     const nome_produto = document.getElementById("inputNome_produto").value;
     const id_unidade_medida = document.getElementById("selectId_unidade_medida").value || null;
     const quantidade_estoque_produto = parseInt(document.getElementById("inputQuantidade_estoque_produto").value) || 0;
@@ -150,7 +150,7 @@ async function salvar() {
 
         visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');
         limparAtributos();
-        document.getElementById("inputId_produto").value = "";
+        document.getElementById("inputID_produto").value = "";
         listar();
     } catch (erro) {
         mostrarAviso("Erro ao efetuar operação no servidor.");
@@ -187,7 +187,7 @@ function mostrarAviso(mensagem) {
 }
 
 function mostrarDadosProduto(p) {
-    document.getElementById("inputId_produto").value = p.id_produto;
+    document.getElementById("inputID_produto").value = p.id_produto;
     document.getElementById("inputNome_produto").value = p.nome_produto;
     document.getElementById("selectId_unidade_medida").value = p.id_unidade_medida || "";
     document.getElementById("inputQuantidade_estoque_produto").value = p.quantidade_estoque_produto;
@@ -207,7 +207,7 @@ function limparAtributos() {
 }
 
 function bloquearAtributos(soLeitura) {
-    document.getElementById("inputId_produto").readOnly = !soLeitura;
+    document.getElementById("inputID_produto").readOnly = !soLeitura;
     document.getElementById("inputNome_produto").readOnly = soLeitura;
     document.getElementById("selectId_unidade_medida").disabled = soLeitura;
     document.getElementById("inputQuantidade_estoque_produto").readOnly = soLeitura;

@@ -4,7 +4,7 @@ const { query } = require('../database');
 exports.listarCargos = async (req, res) => {
     try {
         const result = await query('SELECT * FROM public.cargo ORDER BY id_cargo');
-        res.json({ sucesso: true, unidades: result.rows });
+        res.json({ sucesso: true, cargos: result.rows });
     } catch (error) {
         console.error('Erro ao listar cargo:', error);
         res.status(500).json({ sucesso: false, mensagem: 'Erro ao listar cargo.' });
@@ -19,22 +19,18 @@ exports.obterCargo = async (req, res) => {
             return res.status(404).json({ sucesso: false, mensagem: 'Cargo não encontrado.' });
         }
 
-        res.json({ sucesso: true, unidade: result.rows[0] });
+        res.json({ sucesso: true, cargo: result.rows[0] });
     } catch (error) {
         console.error('Erro ao obter cargo:', error);
         res.status(500).json({ sucesso: false, mensagem: 'Erro interno do servidor.' });
     }
 };
 
-// Criar unidade de medida
+// Criar cargo
 exports.criarCargo = async (req, res) => {
     try {
         const { id_cargo, nome_cargo } = req.body;
         const id = id_cargo ? id_cargo.trim().toUpperCase() : '';
-
-        if (!id || id.length > 2) {
-            return res.status(400).json({ sucesso: false, mensagem: 'A sigla/ID deve ter até 2 caracteres.' });
-        }
 
         if (!nome_cargo) {
             return res.status(400).json({ sucesso: false, mensagem: 'O nome do cargo é obrigatório.' });
@@ -47,7 +43,7 @@ exports.criarCargo = async (req, res) => {
         `;
 
         const result = await query(sql, [id, nome_cargo]);
-        res.status(201).json({ sucesso: true, mensagem: 'cargo feito com sucesso!', unidade: result.rows[0] });
+        res.status(201).json({ sucesso: true, mensagem: 'cargo feito com sucesso!', cargo: result.rows[0] });
     } catch (error) {
         console.error('Erro ao criar cargo:', error);
         if (error.code === '23505') {
@@ -57,7 +53,7 @@ exports.criarCargo = async (req, res) => {
     }
 };
 
-// Atualizar unidade de medida
+// Atualizar cargo
 exports.atualizarCargo = async (req, res) => {
     try {
         const id = req.params.id ? req.params.id.trim().toUpperCase() : '';
@@ -80,7 +76,7 @@ exports.atualizarCargo = async (req, res) => {
             return res.status(404).json({ sucesso: false, mensagem: 'Cargo não encontrado.' });
         }
 
-        res.json({ sucesso: true, mensagem: 'Cargo alterado com sucesso!', unidade: result.rows[0] });
+        res.json({ sucesso: true, mensagem: 'Cargo alterado com sucesso!', cargo: result.rows[0] });
     } catch (error) {
         console.error('Erro ao atualizar cargo:', error);
         res.status(500).json({ sucesso: false, mensagem: 'Erro ao atualizar cargo.' });
@@ -102,7 +98,7 @@ exports.deletarCargo = async (req, res) => {
     } catch (error) {
         console.error('Erro ao deletar cargo:', error);
         if (error.code === '23503') {
-            return res.status(400).json({ sucesso: false, mensagem: 'Não é possível excluir: existem produtos associados a esta unidade.' });
+            return res.status(400).json({ sucesso: false, mensagem: 'Não é possível excluir: existem produtos associados a este cargo.' });
         }
         res.status(500).json({ sucesso: false, mensagem: 'Erro ao excluir cargo.' });
     }

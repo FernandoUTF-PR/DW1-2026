@@ -15,13 +15,13 @@ async function procurePorChavePrimaria(chave) {
 }
 
 async function procure() {
-    const id_unidade_medida = document.getElementById("inputId_unidade_medida").value.trim().toUpperCase();
+    const id_unidade_medida = document.getElementById("inputID_unidade_medida").value.trim().toUpperCase();
     if (!id_unidade_medida || id_unidade_medida.length > 2) {
         mostrarAviso("O ID/Sigla deve conter de 1 a 2 caracteres (ex: KG, UN).");
         return;
     }
 
-    document.getElementById("inputId_unidade_medida").value = id_unidade_medida;
+    document.getElementById("inputID_unidade_medida").value = id_unidade_medida;
     unidadeMedida = await procurePorChavePrimaria(id_unidade_medida);
     oQueEstaFazendo = '';
     
@@ -58,7 +58,7 @@ function excluir() {
 }
 
 async function salvar() {
-    const id_unidade_medida = document.getElementById("inputId_unidade_medida").value.trim().toUpperCase();
+    const id_unidade_medida = document.getElementById("inputID_unidade_medida").value.trim().toUpperCase();
     const nome_unidade_medida = document.getElementById("inputNome_unidade_medida").value;
 
     const dadosUnidade = { id_unidade_medida, nome_unidade_medida };
@@ -86,7 +86,7 @@ async function salvar() {
 
         visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');
         limparAtributos();
-        document.getElementById("inputId_unidade_medida").value = "";
+        document.getElementById("inputID_unidade_medida").value = "";
         listar();
     } catch (erro) {
         mostrarAviso("Erro ao efetuar operação no servidor.");
@@ -125,7 +125,7 @@ function mostrarAviso(mensagem) {
 }
 
 function mostrarDadosUnidade(u) {
-    document.getElementById("inputId_unidade_medida").value = u.id_unidade_medida;
+    document.getElementById("inputID_unidade_medida").value = u.id_unidade_medida;
     document.getElementById("inputNome_unidade_medida").value = u.nome_unidade_medida;
     bloquearAtributos(true);
 }
@@ -138,7 +138,7 @@ function limparAtributos() {
 }
 
 function bloquearAtributos(soLeitura) {
-    document.getElementById("inputId_unidade_medida").readOnly = !soLeitura;
+    document.getElementById("inputID_unidade_medida").readOnly = !soLeitura;
     document.getElementById("inputNome_unidade_medida").readOnly = soLeitura;
 }
 

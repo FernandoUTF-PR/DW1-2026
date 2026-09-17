@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="produto.css">
 </head>
 
-<body onload="inicializar()">
+<body onload="listar()">
     <header>
         <h1>Cadastro de Produtos</h1>
         <p>Gerencie o estoque de produtos do sistema.</p>
@@ -19,9 +19,9 @@
             <section class="form-esquerda">
                 <h2>Dados do Produto</h2>
                 
-                <label for="inputId_produto">ID do Produto</label>
+                <label for="inputID_produto">ID do Produto</label>
                 <div class="linha-id">
-                    <input type="text" name="inputId_produto" id="inputId_produto" placeholder="Ex: 1">
+                    <input type="text" name="inputID_produto" id="inputID_produto" placeholder="Ex: 1">
                     <input type="button" value="Procure" id="btProcure" onclick="procure()">
                     <input type="button" value="Inserir" id="btInserir" onclick="inserir()" style="display:none;">
                     <input type="button" value="Alterar" id="btAlterar" onclick="alterar()" style="display:none;">

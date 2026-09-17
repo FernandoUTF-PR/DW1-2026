@@ -8,20 +8,20 @@ async function procurePorChavePrimaria(chave) {
     try {
         const resposta = await fetch(`${URL_API}/formaPagamento/${chave}`);
         const data = await resposta.json();
-        return data.sucesso ? data.pagamentos : null;
+        return data.sucesso ? data.formaPagamento : null;
     } catch (erro) {
         return null;
     }
 }
 
 async function procure() {
-    const id_forma_pagamento = document.getElementById("inputId_forma_pagamento").value.trim().toUpperCase();
+    const id_forma_pagamento = document.getElementById("inputID_forma_pagamento").value.trim().toUpperCase();
     if (!id_forma_pagamento) {
         mostrarAviso("Deve conter pagamento, seu caloteiro / ladrão.");
         return;
     }
 
-    document.getElementById("inputId_forma_pagamento").value = id_forma_pagamento;
+    document.getElementById("inputID_forma_pagamento").value = id_forma_pagamento;
     formaPagamento = await procurePorChavePrimaria(id_forma_pagamento);
     oQueEstaFazendo = '';
     
@@ -58,7 +58,7 @@ function excluir() {
 }
 
 async function salvar() {
-    const id_forma_pagamento = document.getElementById("inputId_forma_pagamento").value;
+    const id_forma_pagamento = document.getElementById("inputID_forma_pagamento").value;
     const nome_forma_pagamento = document.getElementById("inputnome_forma_pagamento").value;
 
     const dadosPagamento = { id_forma_pagamento, nome_forma_pagamento };
@@ -86,7 +86,7 @@ async function salvar() {
 
         visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');
         limparAtributos();
-        document.getElementById("inputId_forma_pagamento").value = "";
+        document.getElementById("inputID_forma_pagamento").value = "";
         listar();
     } catch (erro) {
         mostrarAviso("Erro ao efetuar operação no servidor.");
@@ -94,13 +94,13 @@ async function salvar() {
 }
 
 async function listar() {
-   alert("diabo n mora nesse detalhe");
+   
     try {
         const resposta = await fetch(`${URL_API}/formaPagamento/listar`);
         const data = await resposta.json();
         if (data.sucesso) {
             let texto = "";
-            for (let linha of data.pagamentos) {
+            for (let linha of data.formaPagamento) {
                 texto += `<b>[${linha.id_forma_pagamento}]</b> - ${linha.nome_forma_pagamento}<br>`;
             }
             document.getElementById("outputSaida").innerHTML = texto || "Nenhuma forma de pagamento cadastrado.";
@@ -108,6 +108,7 @@ async function listar() {
             document.getElementById("outputSaida").innerHTML = `Erro no banco: ${data.mensagem}`;
         }
     } catch (erro) {
+        alert("diabo n mora nesse detalhe");
         console.error("Erro ao listar:", erro);
         document.getElementById("outputSaida").innerHTML = "Servidor offline ou erro de conexão (CORS).";
     }
@@ -125,7 +126,7 @@ function mostrarAviso(mensagem) {
 }
 
 function mostrarDadosPagamento(u) {
-    document.getElementById("inputId_forma_pagamento").value = u.id_forma_pagamento;
+    document.getElementById("inputID_forma_pagamento").value = u.id_forma_pagamento;
     document.getElementById("inputnome_forma_pagamento").value = u.nome_forma_pagamento;
     bloquearAtributos(true);
 }
@@ -138,7 +139,7 @@ function limparAtributos() {
 }
 
 function bloquearAtributos(soLeitura) {
-    document.getElementById("inputId_forma_pagamento").readOnly = !soLeitura;
+    document.getElementById("inputID_forma_pagamento").readOnly = !soLeitura;
     document.getElementById("inputnome_forma_pagamento").readOnly = soLeitura;
 }
 

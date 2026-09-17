@@ -1,10 +1,10 @@
 const { query } = require('../database');
 
 // Listar todas as formas de pagamento
-exports.listarFormaPagamentos = async (req, res) => {
+exports.listarFormaPagamento = async (req, res) => {
     try {
         const result = await query('SELECT * FROM public.forma_pagamento ORDER BY id_forma_pagamento');
-        res.json({ sucesso: true, unidades: result.rows });
+        res.json({ sucesso: true, formaPagamento: result.rows });
     } catch (error) {
         console.error('Erro ao listar formas de pagamento:', error);
         res.status(500).json({ sucesso: false, mensagem: 'Erro ao listar formas de pagamento.' });
@@ -14,13 +14,15 @@ exports.listarFormaPagamentos = async (req, res) => {
 // Obter forma de pagamento por ID
 exports.obterFormaPagamento = async (req, res) => {
     try {
-        
+        const id = req.params.id;
+        const { nome_forma_pagamento } = req.body;
+
         const result = await query('SELECT * FROM public.forma_pagamento WHERE id_forma_pagamento = $1', [id]);
         if (result.rows.length === 0) {
             return res.status(404).json({ sucesso: false, mensagem: 'forma de pagamento não encontrada.' });
         }
 
-        res.json({ sucesso: true, unidade: result.rows[0] });
+        res.json({ sucesso: true, formaPagamento: result.rows[0] });
     } catch (error) {
         console.error('Erro ao obter forma de pagamento:', error);
         res.status(500).json({ sucesso: false, mensagem: 'Erro interno do servidor.' });
@@ -33,12 +35,8 @@ exports.criarFormaPagamento = async (req, res) => {
         const { id_forma_pagamento, nome_forma_pagamento } = req.body;
         const id = id_forma_pagamento ? id_forma_pagamento.trim().toUpperCase() : '';
 
-        if (!id || id.length > 2) {
-            return res.status(400).json({ sucesso: false, mensagem: 'A sigla/ID deve ter até 2 caracteres.' });
-        }
-
         if (!nome_forma_pagamento) {
-            return res.status(400).json({ sucesso: false, mensagem: 'O nome da unidade é obrigatório.' });
+            return res.status(400).json({ sucesso: false, mensagem: 'O nome da forma de pagamento é obrigatório.' });
         }
 
         const sql = `
@@ -48,7 +46,7 @@ exports.criarFormaPagamento = async (req, res) => {
         `;
 
         const result = await query(sql, [id, nome_forma_pagamento]);
-        res.status(201).json({ sucesso: true, mensagem: 'forma de pagamento inserida com sucesso!', unidade: result.rows[0] });
+        res.status(201).json({ sucesso: true, mensagem: 'forma de pagamento inserida com sucesso!', formaPagamento: result.rows[0] });
     } catch (error) {
         console.error('Erro ao criar forma de pagamento:', error);
         if (error.code === '23505') {
@@ -81,7 +79,7 @@ exports.atualizarFormaPagamento = async (req, res) => {
             return res.status(404).json({ sucesso: false, mensagem: 'forma de pagamento não encontrada.' });
         }
 
-        res.json({ sucesso: true, mensagem: 'forma de pagamento alterada com sucesso!', unidade: result.rows[0] });
+        res.json({ sucesso: true, mensagem: 'forma de pagamento alterada com sucesso!', formaPagamento: result.rows[0] });
     } catch (error) {
         console.error('Erro ao atualizar forma de pagamento:', error);
         res.status(500).json({ sucesso: false, mensagem: 'Erro ao atualizar forma de pagamento.' });

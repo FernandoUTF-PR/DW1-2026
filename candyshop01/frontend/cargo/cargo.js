@@ -8,7 +8,7 @@ async function procurePorChavePrimaria(chave) {
     try {
         const resposta = await fetch(`${URL_API}/cargo/${chave}`);
         const data = await resposta.json();
-        return data.sucesso ? data.pagamentos : null;
+        return data.sucesso ? data.cargo : null;
     } catch (erro) {
         return null;
     }
@@ -100,7 +100,7 @@ async function listar() {
         
         if (data.sucesso) {
             let texto = "";
-            for (let linha of data.pagamentos) {
+            for (let linha of data.cargo) {
                 texto += `<b>[${linha.id_cargo}]</b> - ${linha.Nome_cargo}<br>`;
             }
             document.getElementById("outputSaida").innerHTML = texto || "Nenhuma forma de pagamento cadastrado.";
