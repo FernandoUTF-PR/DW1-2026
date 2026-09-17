@@ -4,6 +4,11 @@ let oQueEstaFazendo = '';
 let formaPagamento = null;
 bloquearAtributos(true);
 
+async function inicializar() {
+    await carregarUnidadesMedida();
+    await listar();
+}
+
 async function procurePorChavePrimaria(chave) {
     try {
         const resposta = await fetch(`${URL_API}/formaPagamento/${chave}`);
@@ -15,7 +20,7 @@ async function procurePorChavePrimaria(chave) {
 }
 
 async function procure() {
-    const id_forma_pagamento = document.getElementById("inputID_forma_pagamento").value.trim().toUpperCase();
+    const id_forma_pagamento = document.getElementById("inputID_forma_pagamento").value;
     if (!id_forma_pagamento) {
         mostrarAviso("Deve conter pagamento, seu caloteiro / ladrão.");
         return;

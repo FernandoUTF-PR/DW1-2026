@@ -4,6 +4,11 @@ let oQueEstaFazendo = '';
 let unidadeMedida = null;
 bloquearAtributos(true);
 
+async function inicializar() {
+    await carregarUnidadesMedida();
+    await listar();
+}
+
 async function procurePorChavePrimaria(chave) {
     try {
         const resposta = await fetch(`${URL_API}/unidade_medida/${chave}`);
