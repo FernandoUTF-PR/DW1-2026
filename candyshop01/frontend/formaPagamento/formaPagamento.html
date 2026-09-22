@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="formaPagamento.css">
 </head>
 
-<body onload="inicializar()">
+<body onload="listar()">
     <header>
         <h1>$~Cadastro de pagamento~$</h1>
         <p>Gerencie o seu pagamento.</p>
@@ -28,8 +28,8 @@
                     <input type="button" value="Excluir" id="btExcluir" onclick="excluir()" style="display:none;">
                 </div>
 
-                <label for="inputnome_forma_pagamento">Nome da forma de Pagamento</label>
-                <input type="text" name="inputnome_forma_pagamento" id="inputnome_forma_pagamento" placeholder="Ex: Pix">
+                <label for="inputNome_forma_pagamento">Nome da forma de Pagamento</label>
+                <input type="text" name="inputNome_forma_pagamento" id="inputNome_forma_pagamento" placeholder="Ex: Pix">
 
                     <option value="">Carregando...</option>
                 </select>

@@ -14,6 +14,8 @@ exports.listarCargos = async (req, res) => {
 // Obter cargo por ID
 exports.obterCargo = async (req, res) => {
     try {
+        const id = req.params.id;
+
         const result = await query('SELECT * FROM public.cargo WHERE id_cargo = $1', [id]);
         if (result.rows.length === 0) {
             return res.status(404).json({ sucesso: false, mensagem: 'Cargo não encontrado.' });

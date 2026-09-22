@@ -5,7 +5,6 @@ let formaPagamento = null;
 bloquearAtributos(true);
 
 async function inicializar() {
-    await carregarUnidadesMedida();
     await listar();
 }
 
@@ -31,7 +30,8 @@ async function procure() {
     oQueEstaFazendo = '';
     
     if (formaPagamento) {
-        mostrardadosPagamento(formaPagamento);
+        mostrarDadosPagamento(formaPagamento);
+        alert("bookmark");
         visibilidadeDosBotoes('inline', 'none', 'inline', 'inline', 'none');
         mostrarAviso("Achou no banco, pode alterar ou excluir");
     } else {
@@ -64,7 +64,7 @@ function excluir() {
 
 async function salvar() {
     const id_forma_pagamento = document.getElementById("inputID_forma_pagamento").value;
-    const nome_forma_pagamento = document.getElementById("inputnome_forma_pagamento").value;
+    const nome_forma_pagamento = document.getElementById("inputNome_forma_pagamento").value;
 
     const dadosPagamento = { id_forma_pagamento, nome_forma_pagamento };
 
@@ -130,22 +130,22 @@ function mostrarAviso(mensagem) {
     document.getElementById("divAviso").innerHTML = mensagem;
 }
 
-function mostrarDadosPagamento(u) {
-    document.getElementById("inputID_forma_pagamento").value = u.id_forma_pagamento;
-    document.getElementById("inputnome_forma_pagamento").value = u.nome_forma_pagamento;
+function mostrarDadosPagamento(formaPagamento) {
+    document.getElementById("inputID_forma_pagamento").value = formaPagamento.id_forma_pagamento;
+    document.getElementById("inputNome_forma_pagamento").value = formaPagamento.nome_forma_pagamento;
     bloquearAtributos(true);
 }
 
 function limparAtributos() {
     formaPagamento = null;
     oQueEstaFazendo = '';
-    document.getElementById("inputnome_forma_pagamento").value = "";
+    document.getElementById("inputNome_forma_pagamento").value = "";
     bloquearAtributos(true);
 }
 
 function bloquearAtributos(soLeitura) {
     document.getElementById("inputID_forma_pagamento").readOnly = !soLeitura;
-    document.getElementById("inputnome_forma_pagamento").readOnly = soLeitura;
+    document.getElementById("inputNome_forma_pagamento").readOnly = soLeitura;
 }
 
 function visibilidadeDosBotoes(btP, btI, btA, btE, btS) {

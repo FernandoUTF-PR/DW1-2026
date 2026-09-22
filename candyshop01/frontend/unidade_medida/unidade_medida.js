@@ -5,7 +5,6 @@ let unidadeMedida = null;
 bloquearAtributos(true);
 
 async function inicializar() {
-    await carregarUnidadesMedida();
     await listar();
 }
 

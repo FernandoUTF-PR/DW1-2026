@@ -1,13 +1,13 @@
 const URL_API = 'http://localhost:3001';
 
 let oQueEstaFazendo = '';
-let formaPagamento = null;
+let cargo = null;
 bloquearAtributos(true);
 
 async function inicializar() {
-    await carregarUnidadesMedida();
     await listar();
 }
+
 async function procurePorChavePrimaria(chave) {
     try {
         const resposta = await fetch(`${URL_API}/cargo/${chave}`);
@@ -21,16 +21,16 @@ async function procurePorChavePrimaria(chave) {
 async function procure() {
     const id_cargo = document.getElementById("inputID_cargo").value;
     if (!id_cargo) {
-        mostrarAviso("Deve conter pagamento, seu caloteiro / ladrão.");
+        mostrarAviso("Deve conter cargo!");
         return;
     }
 
     document.getElementById("inputID_cargo").value = id_cargo;
-    formaPagamento = await procurePorChavePrimaria(id_cargo);
+    cargo = await procurePorChavePrimaria(id_cargo);
     oQueEstaFazendo = '';
     
-    if (formaPagamento) {
-        mostrardadosPagamento(formaPagamento);
+    if (cargo) {
+        mostrarCargo(cargo);
         visibilidadeDosBotoes('inline', 'none', 'inline', 'inline', 'none');
         mostrarAviso("Achou no banco, pode alterar ou excluir");
     } else {
@@ -44,7 +44,7 @@ function inserir() {
     bloquearAtributos(false);
     visibilidadeDosBotoes('none', 'none', 'none', 'none', 'inline');
     oQueEstaFazendo = 'inserindo';
-    mostrarAviso("INSERINDO - Digite o Nome do pagamento e clique em salvar");
+    mostrarAviso("INSERINDO - Digite o Nome do cargo e clique em salvar");
 }
 
 function alterar() {
@@ -65,21 +65,21 @@ async function salvar() {
     const id_cargo = document.getElementById("inputID_cargo").value;
     const nome_cargo = document.getElementById("inputNome_cargo").value;
 
-    const dadosPagamento = { id_cargo, nome_cargo };
+    const dadosCargo = { id_cargo, nome_cargo };
 
     try {
         if (oQueEstaFazendo === 'inserindo') {
-            const resp = await fetch(`${URL_API}/pagamento`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosPagamento) });
+            const resp = await fetch(`${URL_API}/cargo`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosCargo) });
             const data = await resp.json();
             if (!data.sucesso) return mostrarAviso(data.mensagem);
             mostrarAviso("Inserido no Banco de Dados com sucesso!");
         } else if (oQueEstaFazendo === 'alterando') {
-            const resp = await fetch(`${URL_API}/pagamento/${id_cargo}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosPagamento) });
+            const resp = await fetch(`${URL_API}/cargo/${id_cargo}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dadosCargo) });
             const data = await resp.json();
             if (!data.sucesso) return mostrarAviso(data.mensagem);
             mostrarAviso("Alterado no Banco de Dados com sucesso!");
         } else if (oQueEstaFazendo === 'excluindo') {
-            const resposta = await fetch(`${URL_API}/pagamento/${id_cargo}`, { method: 'DELETE' });
+            const resposta = await fetch(`${URL_API}/cargo/${id_cargo}`, { method: 'DELETE' });
             const data = await resposta.json();
             if (!data.sucesso) {
                 mostrarAviso(data.mensagem || "Erro ao excluir no servidor.");
@@ -99,15 +99,14 @@ async function salvar() {
 
 async function listar() {
     try {
-        const resposta = await fetch(`${URL_API}/pagamento/listar`);
+        const resposta = await fetch(`${URL_API}/cargo/listar`);
         const data = await resposta.json();
-        
         if (data.sucesso) {
             let texto = "";
-            for (let linha of data.cargo) {
-                texto += `<b>[${linha.id_cargo}]</b> - ${linha.Nome_cargo}<br>`;
+            for (let linha of data.cargos) {
+                texto += `<b>[${linha.id_cargo}]</b> - ${linha.nome_cargo}<br>`;
             }
-            document.getElementById("outputSaida").innerHTML = texto || "Nenhuma forma de pagamento cadastrado.";
+            document.getElementById("outputSaida").innerHTML = texto || "Nenhuma forma de cargo cadastrada.";
         } else {
             document.getElementById("outputSaida").innerHTML = `Erro no banco: ${data.mensagem}`;
         }
@@ -128,14 +127,14 @@ function mostrarAviso(mensagem) {
     document.getElementById("divAviso").innerHTML = mensagem;
 }
 
-function mostrarDadosPagamento(u) {
+function mostrarCargo(u) {
     document.getElementById("inputID_cargo").value = u.id_cargo;
     document.getElementById("inputNome_cargo").value = u.nome_cargo;
     bloquearAtributos(true);
 }
 
 function limparAtributos() {
-    formaPagamento = null;
+    cargo = null;
     oQueEstaFazendo = '';
     document.getElementById("inputNome_cargo").value = "";
     bloquearAtributos(true);
