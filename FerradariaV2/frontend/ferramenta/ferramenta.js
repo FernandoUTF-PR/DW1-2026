@@ -10,21 +10,7 @@ async function inicializar() {
     await listar();
 }
 
-async function carregarProduto() {
-    const select = document.getElementById("selectId_cargo");
-    try {
-        const resposta = await fetch(`${URL_API}/cargo/listar`);
-        const data = await resposta.json();
-        if (data.sucesso) {
-            select.innerHTML = '<option value="">-- Selecione um emprego --</option>';
-            data.cargo.forEach(um => {
-                select.innerHTML += `<option value="${um.id_produto}">${um.id_produto} - ${um.nome_produto}</option>`;
-            });
-        }
-    } catch (erro) {
-        select.innerHTML = '<option value="">Erro ao carregar empregos</option>';
-    }
-}
+
 
 function carregarImagem(id) {
     const img = document.getElementById('imgProduto');
