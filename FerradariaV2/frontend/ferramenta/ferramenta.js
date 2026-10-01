@@ -6,7 +6,6 @@ let produto = null;
 bloquearAtributos(true);
 
 async function inicializar() {
-    await carregarProduto();
     await listar();
 }
 
