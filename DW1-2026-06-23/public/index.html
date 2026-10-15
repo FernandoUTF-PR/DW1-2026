@@ -53,10 +53,10 @@
             <p><strong>💡 Adições que o comandante entende 💡</strong></p>
             <p>• Digite <span class="codigoAtacar">atacar</span> → Ele responde "Coloque o nome do país"</p>
             <p>Opções:</p>
-                <p>-Digite <span class="codigoAtacar">israel</span> para selecionar Israel</p>
-                <p>-Digite <span class="codigoAtacar">e.u.a</span> para selecionar E.U.A</p>
-                <p>-Digite <span class="codigoAtacar">argentina</span> para selecionar argentina</p>
-                <p>-Digite <span class="codigoAtacar">brasil</span> para selecionar Brasil</p>
+            <p>-Digite <span class="codigoAtacar">israel</span> para selecionar Israel</p>
+            <p>-Digite <span class="codigoAtacar">e.u.a</span> para selecionar E.U.A</p>
+            <p>-Digite <span class="codigoAtacar">argentina</span> para selecionar argentina</p>
+            <p>-Digite <span class="codigoAtacar">brasil</span> para selecionar Brasil</p>
             <p>• Digite <span class="codigoPaisQual">todos</span> → Ela responde "Tá doido?"</p>
         </div>
 
@@ -209,21 +209,33 @@
                     body: JSON.stringify(bilheteJSON)       // Converte o objeto para texto JSON
                 });
 
-                // 5. Converter a resposta da Servidorina para JSON
+
+
+
+                /*
+                mexi no código abaixo, para que o comando de pais inimigo funcione, e ele retorna os dados do banco de dados, e mostra na tela, com o nome do pais, id da capital e quantidade de soldados
+                */
+
+
+                // 5. Converter a resposta do servidor para JSON
                 const dados = await resposta.json();
 
                 // 6. Mostrar a resposta na tela
                 if (dados.status === "sucesso") {
-                    // Formata a resposta para mostrar quebras de linha
-                    const mensagemFormatada = JSON.stringify();
+                    // Opção 1: Mostrar como tabela
+                    let html = '<strong>✅ O comandante respondeu:</strong><br>';
+                    dados.mensagem.forEach(item => {
+                        html += `
+                            <div style="border:1px solid #ccc; padding:10px; margin:5px 0;">
+                            <strong>País:</strong> ${item.nome_pais}<br>
+                            <strong>ID Capital:</strong> ${item.id_capital}<br>
+                            <strong>Soldados:</strong> ${item.quantidade_soldado}
+                            </div>
+                            `;
+                    });
                     document.getElementById('resultadoMensagem').innerHTML = `
-                        <div class="sucesso">
-                            <strong>✅ O comandante respondeu:</strong><br>
-                            ${mensagemFormatada}
-                        </div>
+                        <div class="sucesso">${html}</div>
                     `;
-                } else {
-                    document.getElementById('resultadoMensagem').innerHTML = `<div class="erro">❌ ${dados.mensagem}</div>`;
                 }
 
                 // 7. Limpar o campo de entrada
