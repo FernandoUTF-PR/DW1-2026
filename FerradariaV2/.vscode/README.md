@@ -1,1 +1,0 @@
-Loja de ferramentas com base no candyshop
