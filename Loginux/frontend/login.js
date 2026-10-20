@@ -81,7 +81,7 @@ async function realizarLogin(event) {
         const data = await response.json();
 
         if (data.status === 'ok') {
-            window.location.href = "LoginPage2.html";
+            window.location.href = '/menu';
         } else if (data.status === 'senha_incorreta') {
             mensagemErro.innerText = 'Senha incorreta. Tente novamente.';
         } else {
