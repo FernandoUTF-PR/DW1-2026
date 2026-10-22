@@ -10,11 +10,13 @@ const btnVerificarEmail = document.getElementById('btnVerificarEmail');
 const btnVoltar = document.getElementById('btnVoltar');
 const saudacaoUsuario = document.getElementById('saudacaoUsuario');
 const mensagemErro = document.getElementById('mensagemErro');
+const btnEsqueci = document.getElementById('btnEsqueci');
 
 // Event Listeners
 btnVerificarEmail.addEventListener('click', verificarEmail);
 btnVoltar.addEventListener('click', voltarParaEmail);
 formLogin.addEventListener('submit', realizarLogin);
+btnEsqueci.addEventListener('return', esqueciSenha);
 
 // 🔹 Etapa 1: Verifica se o e-mail existe
 async function verificarEmail() {
