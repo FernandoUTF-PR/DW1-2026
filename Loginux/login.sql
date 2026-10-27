@@ -1,5 +1,3 @@
-DROP TABLE if exists pessoa;
-
 CREATE TABLE pessoa (
     id_pessoa SERIAL PRIMARY KEY,
     nome_pessoa VARCHAR(100) NOT NULL,

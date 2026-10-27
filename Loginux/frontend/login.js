@@ -1,4 +1,4 @@
-const API_BASE_URL = ''; // mesma origem do servidor
+const API_BASE_URL = 'http://localhost:3001'; // mesma origem do servidor
 
 // Elementos do DOM
 const formLogin = document.getElementById('formLogin');
@@ -7,6 +7,7 @@ const etapaSenha = document.getElementById('etapaSenha');
 const inputEmail = document.getElementById('email');
 const inputSenha = document.getElementById('senha');
 const btnVerificarEmail = document.getElementById('btnVerificarEmail');
+const btnVerificarSenha = document.getElementById('btnVerificarSenha');
 const btnVoltar = document.getElementById('btnVoltar');
 const saudacaoUsuario = document.getElementById('saudacaoUsuario');
 const mensagemErro = document.getElementById('mensagemErro');
@@ -16,38 +17,31 @@ const btnEsqueci = document.getElementById('btnEsqueci');
 btnVerificarEmail.addEventListener('click', verificarEmail);
 btnVoltar.addEventListener('click', voltarParaEmail);
 formLogin.addEventListener('submit', realizarLogin);
-btnEsqueci.addEventListener('return', esqueciSenha);
+
 
 // 🔹 Etapa 1: Verifica se o e-mail existe
 async function verificarEmail() {
-    const email = inputEmail.value.trim();
-    mensagemErro.innerText = '';
+    const email = document.getElementById("email").value;
+    emailGlobal = email;
 
-    if (!email) {
-        mensagemErro.innerText = 'Por favor, informe seu e-mail.';
-        return;
-    }
+    const response = await fetch(`${API_BASE_URL}/login/verificarEmail`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    });
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/login/verificarEmail`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        });
+    const data = await response.json();
+    console.log("Resposta do servidor sobre verificar o email: "+data.nome + " - " + data.status);
 
-        const data = await response.json();
-
-        if (data.status === 'existe') {
-            saudacaoUsuario.innerText = `Olá, ${data.nome}!`;
-            etapaEmail.classList.add('hidden');
-            etapaSenha.classList.remove('hidden');
-            inputSenha.focus();
-        } else {
-            mensagemErro.innerText = 'E-mail não encontrado no sistema.';
+    if (data.status === 'existe') {
+        document.getElementById("loginFrame").style.display = "none";
+        document.getElementById("senhaFrame").style.display = "block";
+        document.getElementById("nomeUsuario").innerText = `Olá, ${data.nome}`;
+    } else {
+        const cadastrar = confirm("E-mail não encontrado. Deseja se cadastrar?");
+        if (cadastrar) {
+            alert("Redirecionando para tela de cadastro... (não implementado)");
         }
-    } catch (error) {
-        console.error('Erro ao verificar e-mail:', error);
-        mensagemErro.innerText = 'Falha ao se comunicar com o servidor.';
     }
 }
 
