@@ -21,6 +21,7 @@ formLogin.addEventListener('submit', realizarLogin);
 
 // 🔹 Etapa 1: Verifica se o e-mail existe
 async function verificarEmail() {
+
     const email = document.getElementById("email").value;
     emailGlobal = email;
 
@@ -34,6 +35,7 @@ async function verificarEmail() {
     console.log("Resposta do servidor sobre verificar o email: "+data.nome + " - " + data.status);
 
     if (data.status === 'existe') {
+        alert("alert 1")
         document.getElementById("loginFrame").style.display = "none";
         document.getElementById("senhaFrame").style.display = "block";
         document.getElementById("nomeUsuario").innerText = `Olá, ${data.nome}`;
