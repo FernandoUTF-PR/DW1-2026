@@ -23,7 +23,7 @@ formLogin.addEventListener('submit', realizarLogin);
 async function verificarEmail() {
 
     const email = document.getElementById("email").value;
-    emailGlobal = email;
+     emailGlobal = email;
 
     const response = await fetch(`${API_BASE_URL}/login/verificarEmail`, {
         method: 'POST',
