@@ -15,6 +15,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const loginRoutes = require('./routes/loginRoutes');
 app.use('/login', loginRoutes);
 
+const menuRoutes = require('./routes/menuRoutes');
+app.use('/menu', menuRoutes);
+
 // 🔧 Rota protegida de exemplo
 app.get('/menu', (req, res) => {
     if (!req.cookies.usuarioLogado) {
