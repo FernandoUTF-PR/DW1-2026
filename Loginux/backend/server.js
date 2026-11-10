@@ -15,17 +15,16 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const loginRoutes = require('./routes/loginRoutes');
 app.use('/login', loginRoutes);
 
-const menuRoutes = require('./routes/menuRoutes');
-app.use('/menu', menuRoutes);
-
-// 🔧 Rota protegida de exemplo
-app.get('/menu', (req, res) => {
+const verificarLogin = (req, res, next) => {
     if (!req.cookies.usuarioLogado) {
         return res.redirect('/login/login.html');
     }
-    res.sendFile(path.join(__dirname, '../frontend/menu.html'));
-});
+    next();
+}
 
-app.listen(3000, () => {
+const menuRoutes = require('./routes/menuRoutes');
+app.use('/menu', verificarLogin, menuRoutes);
+
+app.listen(3001, () => {
     console.log('Servidor rodando em http://localhost:3001');
 });

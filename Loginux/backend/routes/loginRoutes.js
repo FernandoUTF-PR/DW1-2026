@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const loginController = require('../controller/loginController');
+const loginController = require('../controllers/loginController');
 
 router.post('/verificarEmail', loginController.verificarEmail);
 router.post('/verificarSenha', loginController.verificarSenha);
