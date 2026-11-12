@@ -21,44 +21,46 @@ formLogin.addEventListener('submit', realizarLogin);
 
 // 🔹 Etapa 1: Verifica se o e-mail existe
 async function verificarEmail() {
+    const email = document.getElementById("email").value.trim();
 
-    const email = document.getElementById("email").value;
-     emailGlobal = email;
+    try {
+        const response = await fetch(`${API_BASE_URL}/login/verificarEmail`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
 
-    const response = await fetch(`${API_BASE_URL}/login/verificarEmail`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-    });
+        const data = await response.json();
 
-    const data = await response.json();
-    console.log("Resposta do servidor sobre verificar o email: "+data.nome + " - " + data.status);
-
-    if (data.status === 'existe') {
-        alert("alert 1")
-        document.getElementById("loginFrame").style.display = "none";
-        document.getElementById("senhaFrame").style.display = "block";
-        document.getElementById("nomeUsuario").innerText = `Olá, ${data.nome}`;
-    } else {
-        const cadastrar = confirm("E-mail não encontrado. Deseja se cadastrar?");
-        if (cadastrar) {
-            alert("Redirecionando para tela de cadastro... ");
-            let cadastro = cadastrarLogin();
+        if (data.status === 'existe') {
+            // E-mail existe -> Vai para a Senha
+            document.getElementById("nomeUsuario").innerText = `Olá, ${data.nome}`;
+            mostrarCard('cardSenha');
+        } else {
+            // E-mail não existe -> Vai para o Cadastro
+            const desejaCadastrar = confirm("E-mail não encontrado. Deseja se cadastrar?");
+            if (desejaCadastrar) {
+                // Preenche automaticamente o e-mail no form de cadastro
+                document.getElementById('emailCadast').value = email; 
+                mostrarCard('cardCadastro');
+            }
         }
+    } catch (error) {
+        console.error("Erro ao verificar email:", error);
     }
 }
 
-function cadastrarLogin() {
+//function cadastrarLogin() {
 
-    const emailCadast = document.getElementById("emailCadast").value;
-     emailGlobal = emailCadast;
+    //const emailCadast = document.getElementById("emailCadast").value;
+     //emailGlobal = emailCadast;
 
-     const nomeCadast = document.getElementById("nameCadast").value;
-     emailGlobal = emailCadast;
+     //const nomeCadast = document.getElementById("nameCadast").value;
+     //emailGlobal = emailCadast;
 
-     const senhaCadast = document.getElementById("senhaCadast").value;
-     emailGlobal = emailCadast;
-}
+     //const senhaCadast = document.getElementById("senhaCadast").value;
+     //emailGlobal = emailCadast;
+//}
 
 // 🔹 Volta para a etapa de e-mail
 function voltarParaEmail() {
@@ -102,4 +104,21 @@ async function realizarLogin(event) {
         console.error('Erro ao realizar login:', error);
         mensagemErro.innerText = 'Falha ao se comunicar com o servidor.';
     }
+}
+
+function mostrarCard(idParaMostrar) {
+    // Esconde todos
+    document.getElementById('cardEmail').classList.add('hidden');
+    document.getElementById('cardSenha').classList.add('hidden');
+    document.getElementById('cardCadastro').classList.add('hidden');
+    
+    // Mostra apenas o desejado
+    document.getElementById(idParaMostrar).classList.remove('hidden');
+}
+
+function voltarPara(idParaVoltar) {
+    // Limpar campos de erro e senhas ao voltar
+    document.getElementById('mensagemErro').innerText = '';
+    document.getElementById('senha').value = '';
+    mostrarCard(idParaVoltar);
 }
