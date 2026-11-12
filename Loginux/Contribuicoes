@@ -14,3 +14,33 @@ function voltarPara(idParaVoltar) {
     document.getElementById('senha').value = '';
     mostrarCard(idParaVoltar);
 }
+
+async function verificarEmail() {
+    const email = document.getElementById("email").value.trim();
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/login/verificarEmail`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'existe') {
+            // E-mail existe -> Vai para a Senha
+            document.getElementById("nomeUsuario").innerText = `Olá, ${data.nome}`;
+            mostrarCard('cardSenha');
+        } else {
+            // E-mail não existe -> Vai para o Cadastro
+            const desejaCadastrar = confirm("E-mail não encontrado. Deseja se cadastrar?");
+            if (desejaCadastrar) {
+                // Preenche automaticamente o e-mail no form de cadastro
+                document.getElementById('emailCadast').value = email; 
+                mostrarCard('cardCadastro');
+            }
+        }
+    } catch (error) {
+        console.error("Erro ao verificar email:", error);
+    }
+}
