@@ -42,9 +42,22 @@ async function verificarEmail() {
     } else {
         const cadastrar = confirm("E-mail não encontrado. Deseja se cadastrar?");
         if (cadastrar) {
-            alert("Redirecionando para tela de cadastro... (não implementado)");
+            alert("Redirecionando para tela de cadastro... ");
+            let cadastro = cadastrarLogin();
         }
     }
+}
+
+function cadastrarLogin() {
+
+    const emailCadast = document.getElementById("emailCadast").value;
+     emailGlobal = emailCadast;
+
+     const nomeCadast = document.getElementById("nameCadast").value;
+     emailGlobal = emailCadast;
+
+     const senhaCadast = document.getElementById("senhaCadast").value;
+     emailGlobal = emailCadast;
 }
 
 // 🔹 Volta para a etapa de e-mail
