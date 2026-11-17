@@ -13,65 +13,50 @@ function handleUserAction(action) {
   }
 }
 
-async function logout() {
-  try {
-    const res = await fetch(API_BASE_URL + '/login/logout', {
-      credentials: 'include'
-    });
 
-    const data = await res.json();
+const path = require('path');
 
-    if (data.status === 'ok') {
-      window.location.href = "../login/login.html";
-      return true;
+// ABRIR MENU
+
+exports.abrirMenu = (req, res) => {
+
+    const usuario = req.cookies.usuarioLogado;
+
+    if (usuario) {
+
+        res.sendFile(
+            path.join(__dirname, '../../frontend/menu.html')
+        );
+
     } else {
-      window.location.href = "../login/login.html";
-      return false;
+
+        res.redirect('/login/login.html');
+
     }
 
-  } catch (error) {
-    console.error("Erro ao tentar fazer logout:", error);
-    window.location.href = "../login/login.html";
-    return false;
-  }
-}
+};
 
-async function verificarAutorizacao() {
-  try {
-    const res = await fetch(API_BASE_URL + '/login/verificaSeUsuarioEstaLogado', {
-      credentials: 'include'
+
+// REALIZAR LOGOUT
+
+exports.logout = (req, res) => {
+
+    res.clearCookie('usuarioLogado', {
+
+        sameSite: 'Lax',
+
+        secure: false,
+
+        httpOnly: true,
+
+        path: '/'
+
     });
 
-    const oUsuario = await res.json();
+    res.json({ status: 'deslogado' });
 
-    if (oUsuario.status !== 'ok') {
-      //console.log("Usuário não logado, redirecionando...");
-       window.location.href = "../login/login.html";
-      return false;
-    }
+};
 
-    const usuarioObjeto = JSON.parse(oUsuario.usuario || '{}');
-    const oCargo = usuarioObjeto.ehFuncionario ? usuarioObjeto.ehFuncionario.nome_cargo : 'Cliente';
-    
-    // 🟢 LÓGICA DE CONTROLE DO MENU CADASTROS
-    if (itemMenuCadastros) {
-      if (oCargo === 'Gerente') {
-        // Se for Gerente, adiciona a classe para tornar o item visível (usando display: block)
-        itemMenuCadastros.classList.add("gerente-acesso-total");
-      } else {
-        // Caso contrário, remove a classe (o CSS mantém o display: none por padrão)
-        itemMenuCadastros.classList.remove("gerente-acesso-total");
-      }
-    }
-    
-    document.getElementById("oUsuario").options[0].text = `${usuarioObjeto.nome} - ${oCargo}`;
-    return true;
-
-  } catch (error) {
-    console.error("Erro ao verificar login:", error);
-    return false;
-  }
-}
 
 function atualizarContadorCarrinho() {
   const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
@@ -85,7 +70,7 @@ function criarCardProduto(produto) {
   const caminhoImagem = `${API_BASE_URL}${API_IMAGEM_PREFIX}/${produto.id_produto}`;
   const imagemPlaceholder = 'https://via.placeholder.com/200?text=Sem+Imagem';
 
-  const precoFormatado = parseFloat(produto.preco_unitario_produto).toLocaleString('pt-BR', {
+  const precoFormatado = parseFloat(produto.preco_produto).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   });
@@ -98,7 +83,7 @@ function criarCardProduto(produto) {
          
     <div class="card-titulo">${produto.nome_produto}</div>
     <div class="card-detalhe">ID: ${produto.id_produto}</div>
-    <div class="card-detalhe">Estoque: ${produto.quantidade_estoque_produto}</div>
+    <div class="card-detalhe">Estoque: ${produto.quantidade_estoque}</div>
     <div class="card-preco">${precoFormatado} / Kg</div>
     <div class="card-selecao-quantidade">
       <label for="qtd-${produto.id_produto}">Peso (g):</label>
@@ -127,7 +112,7 @@ function adicionarAoCarrinho(produtoId) {
       const item = {
         id: produtoAPI.id_produto,
         nome: produtoAPI.nome_produto,
-        preco: produtoAPI.preco_unitario_produto,
+        preco: produtoAPI.preco_produto,
         quantidade: quantidadeGramas
       };
 
