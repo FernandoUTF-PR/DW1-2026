@@ -1,81 +1,155 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Padaria Padarado Pardal Pardo - Menu Principal</title>
-  <link rel="stylesheet" href="menu.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="./pessoa.css">
 </head>
 
 <body>
-  <header>
-    <div class="topo">
-      <h1 class="header-titulo">Padaria Padarado Pardal Pardo - Menu Principal</h1>
+    <header>
+        <h1>Usuário</h1>
+    </header>
 
-      <div class="usuario-area">
-        <select id="oUsuario" aria-label="Ações do usuário" onchange="handleUserAction(this.value)">
-          <option value="">Usuário</option>
-          <option value="sair">Sair</option>
-        </select>
-      </div>
-    </div>
+    <main>
+        <section class="form-section">
+            <h2>Cadastro de Usuário</h2>
 
-    <nav class="nav" aria-label="Navegação Principal do Site">
+            <form id="pessoaForm">
 
-      <ul class="nav__menu" role="menu">
-        <li class="nav__menu-item"><a href="#">Home</a></li>
+                <div class="search-container">
+                    <label for="searchId">Buscar por ID:</label>
 
-        <li id="itemMenuCadastros" class="nav__menu-item">
-          <a href="#">Cadastros</a>
-          <ul class="nav__submenu"> <li class="nav__submenu-item"><a href="http://localhost:3001/pessoa/abrirCrudPessoa">Pessoa</a></li>
-            <li class="nav__submenu-item"><a href="http://localhost:3001/cargo/abrirCrudCargo">Cargo</a></li>
-            <li class="nav__submenu-item"><a href="http://localhost:3001/forma_pagamento/abrirCrudForma_pagamento">Forma
-                Pagamento</a></li>
-            <li class="nav__submenu-item"><a href="http://localhost:3001/produto/abrirCrudProduto">Produto</a></li>
-            <li class="nav__submenu-item"><a href="http://localhost:3001/pedido/abrirCrudPedido">Pedido</a></li>
-          </ul>
-        </li>
+                    <div class="search-input-group">
+                        <input type="number" id="searchId"
+                            placeholder="Digite o ID para buscar">
 
-        <li class="nav__menu-item">
-          <a href="#">About</a>
-          <ul class="nav__submenu">
-            <li class="nav__submenu-item"><a href="#">Our Company</a></li>
-            <li class="nav__submenu-item"><a href="#">Our Team</a></li>
-          </ul>
-        </li>
+                        <button type="button" id="btnBuscar">🔍 Buscar</button>
+                        <button type="button" id="btnIncluir" class="btn-primary">Incluir</button>
 
-        <li class="nav__menu-item"><a href="#">Blog</a></li>
-        <li class="nav__menu-item"><a href="#">Contact</a></li>
-      </ul>
+                        <button type="button" id="btnAlterar"
+                            class="btn-secondary" style="display: none;">Alterar</button>
 
-      <button id="btnVerCarrinho" class="btn-ver-carrinho"
-        onclick="window.location.href='http://localhost:3001/login/visaoclientecarrinho'"
-        aria-label="Ver Carrinho de Compras">
-        🛒 Ver Carrinho (<span id="contadorCarrinho">0</span>)
-      </button>
+                        <button type="button" id="btnExcluir"
+                            class="btn-danger" style="display: none;">Excluir</button>
 
-    </nav>
-  </header>
+                        <button type="button" id="btnSalvar"
+                            class="btn-save" style="display: none;">Salvar</button>
 
-  <main>
-    <div class="carrossel-container">
-      <button id="prev-btn" class="nav-btn prev" aria-label="Anterior">&lt;</button>
+                        <button type="button" id="btnCancelar"
+                            class="btn-cancel">Cancelar</button>
+                    </div>
+                </div>
 
-      <div id="carrossel-wrapper" class="carrossel-wrapper">
-        <div class="mensagem-info">Carregando produtos...</div>
-      </div>
+                <fieldset id="formFields">
+                    <legend>Dados da Pessoa</legend>
 
-      <button id="next-btn" class="nav-btn next" aria-label="Próximo">&gt;</button>
-    </div>
-  </main>
+                    <div class="form-group">
+                        <label for="nome_pessoa">Nome:</label>
+                        <input type="text" id="nome_pessoa"
+                            name="nome_pessoa" required>
+                    </div>
 
-  <footer>
-    <p>&copy; 2025 - Meu Site</p>
-  </footer>
+                    <div class="form-group">
+                        <label for="email_pessoa">Email:</label>
+                        <input type="email" id="email_pessoa"
+                            name="email_pessoa" required>
+                    </div>
+                </fieldset>
 
-  <script src="menu.js"></script>
+                <div class="umParaum">
 
+                    <div class="funcionario">
+                        <input type="checkbox" id="checkboxFuncionario"
+                            name="checkboxFuncionario">
+
+                        <span id="spanFuncionario">Funcionário</span>
+
+                        <br>
+
+                        <label for="cargo_id_cargo">Cargo:</label>
+                        <select id="cargo_id_cargo" name="cargo_id_cargo">
+                            <option value="">Cargo</option>
+                        </select>
+
+                        <br>
+
+                        <label for="salario_funcionario">Salário:</label>
+                        <input type="number" id="salario_funcionario"
+                            name="salario_funcionario" placeholder="Salário">
+
+                        <br>
+
+                        <label for="porcentagem_comissao_funcionario">
+                            Comissão:
+                        </label>
+
+                        <input type="text"
+                            id="porcentagem_comissao_funcionario"
+                            name="porcentagem_comissao_funcionario"
+                            placeholder="Porcentagem Comissão">
+                    </div>
+
+                    <div class="cliente">
+                        <input type="checkbox" id="checkboxCliente"
+                            name="checkboxCliente">
+
+                        <span id="spanCliente">Cliente</span>
+
+                        <br>
+
+                        <label for="renda_cliente">Renda mensal:</label>
+                        <input type="number" id="renda_cliente"
+                            name="renda_cliente"
+                            placeholder="Renda mensal do cliente">
+
+                        <br>
+
+                        <label for="data_cadastro_cliente">
+                            Data de cadastro:
+                        </label>
+
+                        <input type="date" id="data_cadastro_cliente"
+                            name="data_cadastro_cliente">
+                    </div>
+
+                </div>
+
+            </form>
+        </section>
+
+        <section class="list-section">
+            <div class="table-container">
+                <table id="pessoasTable">
+                    <thead>
+                        <tr>
+                            <th>CPF</th>
+                            <th>Nome</th>
+                            <th>Data Nascimento</th>
+                            <th>Endereço</th>
+                            <th>Senha</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="pessoasTableBody">
+                        <!-- Dados serão carregados dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Fernando</p>
+    </footer>
+
+    <div id="messageContainer" class="message-container"></div>
+
+    <script src="./pessoa.js" defer></script>
 </body>
 
 </html>
