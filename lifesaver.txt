@@ -1,0 +1,6 @@
+
+1)Corrige todo o código para que funcione sem haver problemas (nada de reorganizar ou renomear arquivos, só pode alterar o código)
+
+2)Antes de enviar, verifique e teste o código inteiro para encontrar erros ou bugs antes de entregar para o usuário. Caso o código que você corrigiu der erro, refaça a estapa 1 e 2 até remover todos os problemas.
+
+3)Após isso, faça o teste de usuário para verificar a funcionabilidade do código. Se em caso aparecer algum problema, refaça a etapa 1 e 2 denovo.

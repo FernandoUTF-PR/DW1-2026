@@ -1,76 +1,208 @@
+//import { query } from '../database.js';
+const { query } = require('../database');
+// Funções do controller
 
-const db = require('../database.js');
+const path = require('path');
+const fs = require('fs/promises');
+const DIRETORIO_IMAGENS = path.join(__dirname, '../../imagens/produto');
 
-// LISTAR PRODUTOS
+async function deletarImagemProduto(id) {
+  try { await fs.unlink(path.join(DIRETORIO_IMAGENS, `${id}.png`)); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+}
+
+exports.abrirCrudProduto = (req, res) => {
+  // console.log('produtoController - Rota /abrirCrudProduto - abrir o crudProduto');
+
+  const usuario = req.cookies.usuarioLogado; // O cookie deve conter o nome/ID do usuário
+
+  // Se o cookie 'usuario' existe (o valor é uma string/nome do usuário)
+  if (usuario) {
+    res.sendFile(path.join(__dirname, '../../frontend/produto/produto.html'));
+  } else {
+    // Cookie não existe. Usuário NÃO está logado.
+    res.redirect('/login');
+  }
+
+}
+
 exports.listarProdutos = async (req, res) => {
+  try {
+    const result = await query('SELECT * FROM produto ORDER BY id_produto');
+    //  console.log('Resultado do SELECT:', result.rows);//verifica se está retornando algo
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao listar produtos:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+}
 
-    try {
 
-        const sql = `
-            SELECT
-                p.id_produto,
-                p.nome_produto,
-                p.descricao_produto,
-                p.preco_produto,
-                p.quantidade_estoque,
-                p.imagem_produto,
-                c.nome_categoria
-            FROM produto p
-            LEFT JOIN categoria_produto c
-                ON p.id_categoria = c.id_categoria
-            WHERE p.ativo_produto = TRUE
-            ORDER BY p.nome_produto;
-        `;
+exports.criarProduto = async (req, res) => {
+  //  console.log('Criando produto com dados:', req.body);
+  try {
+    const { id_produto, nome_produto, quantidade_estoque_produto, preco_unitario_produto } = req.body;
 
-        const resultado = await db.query(sql);
-
-        res.json(resultado.rows);
-
-    } catch (erro) {
-
-        console.error('Erro ao buscar produtos:', erro);
-
-        res.status(500).json({
-            erro: 'Erro ao consultar produtos.'
-        });
-
+    // Validação básica
+    if (!nome_produto) {
+      return res.status(400).json({
+        error: 'O nome do produto é obrigatório'
+      });
     }
 
+    const estoque = Number(quantidade_estoque_produto);
+    const preco = Number(preco_unitario_produto);
+    if (!Number.isInteger(estoque) || estoque < 0 || !Number.isFinite(preco) || preco < 0) {
+      return res.status(400).json({ error: 'Estoque e preço devem ser números válidos e não negativos.' });
+    }
+    const result = id_produto === undefined || id_produto === null || String(id_produto).trim() === ''
+      ? await query('INSERT INTO produto (nome_produto, quantidade_estoque_produto, preco_unitario_produto) VALUES ($1, $2, $3) RETURNING *', [nome_produto, estoque, preco])
+      : await query('INSERT INTO produto (id_produto, nome_produto, quantidade_estoque_produto, preco_unitario_produto) VALUES ($1, $2, $3, $4) RETURNING *', [Number(id_produto), nome_produto, estoque, preco]);
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao criar produto:', error);
+
+
+
+    // Verifica se é erro de violação de constraint NOT NULL
+    if (error.code === '23502') {
+      return res.status(400).json({
+        error: 'Dados obrigatórios não fornecidos'
+      });
+    }
+
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+}
+
+exports.obterProduto = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    // console.log("estou no obter produto id="+ id);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'ID deve ser um número válido' });
+    }
+
+    const result = await query(
+      'SELECT * FROM produto WHERE id_produto = $1',
+      [id]
+    );
+
+    //console.log(result)
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Produto não encontrado' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao obter produto:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+}
+
+exports.atualizarProduto = async (req, res) => {
+
+  // console.log(req.body)
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) return res.status(400).json({ error: 'ID inválido' });
+
+    const { nome_produto, quantidade_estoque_produto, preco_unitario_produto } = req.body;
+
+    // Verifica se o produto existe
+    const existing = await query('SELECT * FROM produto WHERE id_produto = $1', [id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ error: 'Produto não encontrado' });
+    }
+
+    // Monta UPDATE dinâmico apenas com campos válidos
+    const updates = [];
+    const values = [];
+    let idx = 1;
+
+    if (nome_produto != null && String(nome_produto).trim() !== '') {
+      updates.push(`nome_produto = $${idx++}`);
+      values.push(String(nome_produto).trim());
+    }
+
+    // quantidade_estoque_produto: aceitar apenas inteiro válido
+    if (quantidade_estoque_produto != null && String(quantidade_estoque_produto).trim() !== '') {
+      const qtyStr = String(quantidade_estoque_produto).replace(',', '.').trim();
+      const qty = Number(qtyStr);
+      if (!Number.isInteger(qty)) {
+        return res.status(400).json({ error: 'quantidade_estoque_produto deve ser um inteiro válido' });
+      }
+      updates.push(`quantidade_estoque_produto = $${idx++}`);
+      values.push(qty);
+    }
+
+    // preco_unitario_produto: aceitar número válido (float), >= 0
+    if (preco_unitario_produto != null && String(preco_unitario_produto).trim() !== '') {
+      const priceStr = String(preco_unitario_produto).replace(',', '.').trim();
+      const price = Number(priceStr);
+      if (!Number.isFinite(price)) {
+        return res.status(400).json({ error: 'preco_unitario_produto deve ser um número válido' });
+      }
+      if (price < 0) {
+        return res.status(400).json({ error: 'preco_unitario_produto não pode ser negativo' });
+      }
+      updates.push(`preco_unitario_produto = $${idx++}`);
+      values.push(price);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'Nenhum campo válido para atualizar' });
+    }
+
+    values.push(id);
+    const sql = `UPDATE produto SET ${updates.join(', ')} WHERE id_produto = $${idx} RETURNING *`;
+
+    const updateResult = await query(sql, values);
+    return res.json(updateResult.rows[0]);
+  } catch (error) {
+    console.error('Erro ao atualizar produto:', error);
+    return res.status(500).json({ error: 'Erro interno do servidor' });
+  }
 };
 
 
-// BUSCAR UM PRODUTO PELO ID
-exports.buscarProduto = async (req, res) => {
+exports.deletarProduto = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    // Verifica se a produto existe
+    const existingPersonResult = await query(
+      'SELECT * FROM produto WHERE id_produto = $1',
+      [id]
+    );
 
-    try {
-
-        const { id } = req.params;
-
-        const resultado = await db.query(
-            `SELECT * FROM produto
-             WHERE id_produto = $1
-             AND ativo_produto = TRUE`,
-            [id]
-        );
-
-        if (resultado.rows.length === 0) {
-
-            return res.status(404).json({
-                erro: 'Produto não encontrado.'
-            });
-
-        }
-
-        res.json(resultado.rows[0]);
-
-    } catch (erro) {
-
-        console.error('Erro ao buscar produto:', erro);
-
-        res.status(500).json({
-            erro: 'Erro ao consultar produto.'
-        });
-
+    if (existingPersonResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Produto não encontrada' });
     }
 
-};
+    // Deleta a produto (as constraints CASCADE cuidarão das dependências)
+    await query(
+      'DELETE FROM produto WHERE id_produto = $1',
+      [id]
+    );
+
+    // Fazemos isso APÓS a exclusão do DB. Se o DB falhar, não apagamos o arquivo.
+    // Usamos o ID do produto para encontrar o arquivo nomeado como 'id.png'
+    await deletarImagemProduto(id);
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Erro ao deletar produto:', error);
+
+    // Verifica se é erro de violação de foreign key (dependências)
+    if (error.code === '23503') {
+      return res.status(400).json({
+        error: 'Não é possível deletar produto com dependências associadas'
+      });
+    }
+
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+}

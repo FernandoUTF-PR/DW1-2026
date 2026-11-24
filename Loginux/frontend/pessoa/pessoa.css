@@ -56,7 +56,7 @@ section h2 {
     color: #2d4a2d;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    border-bottom: 3px solid aquamarine;
+    border-bottom: 3px solid #b9e4c9;
     padding-bottom: 0.5rem;
 }
 
@@ -133,7 +133,7 @@ fieldset legend {
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: aquamarine;
+    border-color: #b9e4c9;
     box-shadow: 0 0 0 3px rgba(127, 255, 212, 0.3);
     background: #f9fffc;
 }
@@ -159,12 +159,12 @@ button {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, aquamarine, #40e0d0);
+    background: linear-gradient(135deg, #b9e4c9, #8ac9a1);
     color: #2d4a2d;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #40e0d0, #20b2aa);
+    background: linear-gradient(135deg, #8ac9a1, #4a9b68);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(64, 224, 208, 0.4);
 }
@@ -220,7 +220,7 @@ button {
 }
 
 .btn-id {
-    background: aquamarine;
+    background: #b9e4c9;
     color: #2d4a2d;
     padding: 0.3rem 0.8rem;
     font-size: 0.9rem;
@@ -230,7 +230,7 @@ button {
 }
 
 .btn-id:hover {
-    background: #40e0d0;
+    background: #8ac9a1;
     transform: scale(1.05);
 }
 
@@ -323,7 +323,7 @@ table tbody tr:nth-child(even):hover {
 }
 
 .message.info {
-    background: linear-gradient(135deg, #d1ecf1, aquamarine);
+    background: linear-gradient(135deg, #d1ecf1, #b9e4c9);
     color: #0c5460;
     border: 1px solid #b8daff;
 }
@@ -499,79 +499,4 @@ select {
     /* Se quiser ser mais específico (apenas esquerda e direita): */
     /* padding-left: 10px; */
     /* padding-right: 10px; */
-}
-
-/* Correções de layout e responsividade */
-
-body {
-    line-height: 1.5;
-}
-
-header h1 {
-    font-weight: 600;
-}
-
-.search-input-group {
-    flex-wrap: wrap;
-}
-
-.search-input-group button {
-    flex: 0 1 auto;
-}
-
-.funcionario,
-.cliente {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    flex: 1 1 300px;
-}
-
-.funcionario label,
-.cliente label {
-    margin-left: 5px;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="date"],
-input[type="email"],
-input[type="password"],
-select {
-    margin-left: 8px;
-}
-
-.umParaum {
-    align-items: stretch;
-    margin-top: 20px;
-}
-
-button:disabled,
-input:disabled,
-select:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-@media (max-width: 768px) {
-    .search-input-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .search-input-group input,
-    .search-input-group button {
-        width: 100%;
-        max-width: none;
-    }
-
-    .funcionario,
-    .cliente {
-        flex-basis: 100%;
-    }
-
-    .table-container {
-        overflow-x: auto;
-    }
 }
