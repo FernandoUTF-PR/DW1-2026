@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padaria Padaro Pardal Pardo - Cardápio Digital</title>
+  <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+
+  <!-- Cabeçalho estilo ePadoca -->
+  <header class="store-header">
+    <div class="header-banner"></div>
+    <div class="header-content container">
+      <div class="store-identity">
+        <div class="store-logo">🥖</div>
+        <div class="store-details">
+          <h1>Padaria Padarado Pardal Pardo</h1>
+          <p class="store-meta">
+            <span class="status-badge open">● Aberto agora</span> • Entrega: 30-45 min • Pedido mín. R$ 15,00
+          </p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Mesmo botão servirá futuramente para cliente ou admin -->
+        <a href="./login/login.html" id="btn-auth-header" class="btn-login-header">
+          Entrar / Cadastrar
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Busca e Navegação por Categorias -->
+  <nav class="category-bar">
+    <div class="container category-bar-inner">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Buscar pão, bolo, salgado...">
+      </div>
+      <ul class="category-tabs" id="category-tabs">
+        <li><button class="tab-btn active" data-category="todos">Todos</button></li>
+        <li><button class="tab-btn" data-category="paes">Pães & Padaria</button></li>
+        <li><button class="tab-btn" data-category="salgados">Salgados & Lanches</button></li>
+        <li><button class="tab-btn" data-category="doces">Bolos & Doces</button></li>
+        <li><button class="tab-btn" data-category="bebidas">Bebidas & Cafés</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Conteúdo Principal: Vitrine + Sacola -->
+  <main class="main-layout container">
+    
+    <!-- Lista de Produtos -->
+    <section class="catalog-section">
+      <h2 id="section-title">Todos os Produtos</h2>
+      <div class="products-grid" id="products-grid">
+        <!-- Cards renderizados via menu.js -->
+      </div>
+    </section>
+
+    <!-- Sacola de Compras (Desktop lateral / Mobile fixa embaixo) -->
+    <aside class="cart-sidebar" id="cart-sidebar">
+      <div class="cart-header">
+        <h3>Sua Sacola</h3>
+        <span id="cart-count-badge">0 itens</span>
+      </div>
+
+      <div class="cart-items" id="cart-items">
+        <p class="empty-cart-msg">Sua sacola está vazia. Escolha itens deliciosos ao lado!</p>
+      </div>
+
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span>Total do pedido</span>
+          <strong id="cart-total">R$ 0,00</strong>
+        </div>
+        <button id="btn-checkout" class="btn-checkout" disabled>
+          Comprar Agora
+        </button>
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="menu.js"></script>
+</body>
+</html>
