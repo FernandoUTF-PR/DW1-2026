@@ -1,4 +1,3 @@
-
 -- ==========================================
 -- 1. CADASTRO DE PESSOAS
 -- ==========================================
@@ -60,10 +59,17 @@ CREATE TABLE IF NOT EXISTS produto (
         CHECK (preco_produto >= 0),
     quantidade_estoque INTEGER DEFAULT 0
         CHECK (quantidade_estoque >= 0),
+    unidade_produto VARCHAR(20) DEFAULT 'un',
     imagem_produto VARCHAR(255),
     ativo_produto BOOLEAN DEFAULT TRUE,
     id_categoria INTEGER REFERENCES categoria_produto(id_categoria)
 );
+
+-- Garante a coluna unidade_produto caso a tabela já exista no banco
+ALTER TABLE produto
+ADD COLUMN IF NOT EXISTS unidade_produto VARCHAR(20) DEFAULT 'un';
+
+UPDATE produto SET unidade_produto = 'un' WHERE unidade_produto IS NULL;
 
 -- ==========================================
 -- 5. FORMAS DE PAGAMENTO
@@ -150,6 +156,7 @@ INSERT INTO produto (
     descricao_produto,
     preco_produto,
     quantidade_estoque,
+    unidade_produto,
     id_categoria
 )
 SELECT
@@ -157,6 +164,7 @@ SELECT
     'Pão francês tradicional',
     0.80,
     100,
+    'un',
     id_categoria
 FROM categoria_produto
 WHERE nome_categoria = 'Pães'
@@ -170,6 +178,7 @@ INSERT INTO produto (
     descricao_produto,
     preco_produto,
     quantidade_estoque,
+    unidade_produto,
     id_categoria
 )
 SELECT
@@ -177,6 +186,7 @@ SELECT
     'Coxinha de frango',
     7.50,
     30,
+    'un',
     id_categoria
 FROM categoria_produto
 WHERE nome_categoria = 'Salgados'
@@ -190,6 +200,7 @@ INSERT INTO produto (
     descricao_produto,
     preco_produto,
     quantidade_estoque,
+    unidade_produto,
     id_categoria
 )
 SELECT
@@ -197,6 +208,7 @@ SELECT
     'Brigadeiro tradicional',
     3.50,
     40,
+    'un',
     id_categoria
 FROM categoria_produto
 WHERE nome_categoria = 'Doces'
@@ -244,4 +256,19 @@ SELECT
 FROM pessoa p
 CROSS JOIN papel pa
 WHERE pa.nome_papel = 'cliente'
+ON CONFLICT DO NOTHING;
+
+-- ==========================================
+-- 13. USUÁRIO ADMINISTRADOR PADRÃO
+-- ==========================================
+
+INSERT INTO pessoa (nome_pessoa, email_pessoa, senha_pessoa)
+VALUES ('Administrador Padaria', 'adm@gmail.com', 'admin123')
+ON CONFLICT (email_pessoa) DO NOTHING;
+
+INSERT INTO pessoa_papel (id_pessoa, id_papel)
+SELECT p.id_pessoa, pa.id_papel
+FROM pessoa p, papel pa
+WHERE p.email_pessoa = 'adm@gmail.com'
+  AND pa.nome_papel = 'gerente'
 ON CONFLICT DO NOTHING;

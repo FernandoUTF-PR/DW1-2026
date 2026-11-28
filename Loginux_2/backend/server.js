@@ -59,6 +59,10 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(cookieParser()); // 🔑 necessário para ler req.cookies
 app.use('/produto', produtoRoutes);
+
+const pedidoRoutes = require('./routes/pedidoRoutes');
+app.use('/pedido', pedidoRoutes);
+
 // 🔧 Servir arquivos estáticos do frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 

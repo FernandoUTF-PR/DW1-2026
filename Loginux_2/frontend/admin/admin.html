@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - Padaria Padarado Pardal Pardo</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <header class="admin-header">
+    <div class="container header-inner">
+      <div>
+        <h1>⚙️ Gestão de Produtos & Estoque</h1>
+        <p id="admin-welcome">Padaria Padarado Pardal Pardo</p>
+      </div>
+      <div class="header-btns">
+        <a href="/menu.html" class="btn-outline">🥖 Ver Cardápio</a>
+        <button id="btn-logout" class="btn-danger-outline">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container admin-grid">
+    
+    <!-- Formulário de Cadastro / Edição -->
+    <section class="card form-card">
+      <h2 id="form-title">Cadastrar Novo Produto</h2>
+
+      <form id="produto-form" enctype="multipart/form-data">
+        <input type="hidden" id="id_produto">
+
+        <div class="form-group">
+          <label for="nome_produto">Nome do Produto *</label>
+          <input type="text" id="nome_produto" required placeholder="Ex: Pão Francês, Bolo de Fubá...">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="id_categoria">Categoria *</label>
+            <select id="id_categoria" required>
+              <option value="">Carregando...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="unidade_produto">Unidade de Medida *</label>
+            <select id="unidade_produto" required>
+              <option value="un">Unidade (un)</option>
+              <option value="kg">Quilograma (kg)</option>
+              <option value="g">Gramas (g)</option>
+              <option value="fatia">Fatia</option>
+              <option value="cento">Cento</option>
+              <option value="L">Litro (L)</option>
+              <option value="ml">Mililitro (ml)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="preco_produto">Preço (R$) *</label>
+            <input type="number" id="preco_produto" step="0.01" min="0" required placeholder="0.00">
+          </div>
+
+          <div class="form-group">
+            <label for="quantidade_estoque">Qtd. em Estoque *</label>
+            <input type="number" id="quantidade_estoque" min="0" required placeholder="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descricao_produto">Descrição</label>
+          <textarea id="descricao_produto" rows="2" placeholder="Ingredientes, peso aproximado, detalhes..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="imagem">Foto do Produto (opcional)</label>
+          <input type="file" id="imagem" accept="image/*">
+          <small id="imagem-atual-info" class="muted-text"></small>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="btn-salvar" class="btn-primary">Salvar Produto</button>
+          <button type="button" id="btn-cancelar" class="btn-secondary hidden">Cancelar Edição</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Tabela de Produtos Cadastrados -->
+    <section class="card list-card">
+      <div class="list-header">
+        <h2>Produtos no Cardápio</h2>
+        <span id="total-produtos">0 produtos</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Estoque</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-produtos">
+            <!-- Preenchido via admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

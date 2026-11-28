@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../database.js');
 
-// 🔹 Verifica se o e-mail existe e retorna o nome
+// 🔹 ETAPA 1: Verifica se o e-mail existe e retorna o nome
 exports.verificarEmail = async (req, res) => {
     const { email } = req.body;
     const sql = 'SELECT nome_pessoa FROM pessoa WHERE email_pessoa = $1';
@@ -10,9 +10,9 @@ exports.verificarEmail = async (req, res) => {
         const result = await db.query(sql, [email]);
 
         if (result.rows.length > 0) {
-            return res.json({ 
-                status: 'existe', 
-                nome: result.rows[0].nome_pessoa 
+            return res.json({
+                status: 'existe',
+                nome: result.rows[0].nome_pessoa
             });
         }
 
@@ -23,7 +23,7 @@ exports.verificarEmail = async (req, res) => {
     }
 };
 
-// 🔹 Valida a senha e cria o cookie de sessão
+// 🔹 ETAPA 2: Valida a senha, busca papéis (cliente/funcionario/gerente) e cria cookie
 exports.verificarSenha = async (req, res) => {
     const { email, senha } = req.body;
 
@@ -40,10 +40,9 @@ exports.verificarSenha = async (req, res) => {
             return res.json({ status: 'senha_incorreta' });
         }
 
-        const { nome_pessoa, senha_pessoa } = resultPessoa.rows[0];
+        const { id_pessoa, nome_pessoa, senha_pessoa } = resultPessoa.rows[0];
         const senhaBanco = senha_pessoa || '';
 
-        // Suporta senha com hash (bcrypt) ou texto puro
         let senhaValida = false;
         if (senhaBanco.startsWith('$2b$') || senhaBanco.startsWith('$2a$')) {
             senhaValida = await bcrypt.compare(senha, senhaBanco);
@@ -55,16 +54,36 @@ exports.verificarSenha = async (req, res) => {
             return res.json({ status: 'senha_incorreta' });
         }
 
-        // 🔐 Cria o cookie de sessão
-        res.cookie('usuarioLogado', nome_pessoa, {
-            sameSite: 'Lax',
-            secure: false,       // true apenas em HTTPS
-            httpOnly: true,      // JavaScript do cliente não acessa
-            path: '/',
-            maxAge: 24 * 60 * 60 * 1000, // 24 horas
+        // Busca os papéis do usuário no banco
+        const sqlPapeis = `
+            SELECT pa.nome_papel
+            FROM pessoa_papel pp
+            INNER JOIN papel pa ON pp.id_papel = pa.id_papel
+            WHERE pp.id_pessoa = $1
+        `;
+        const resultPapeis = await db.query(sqlPapeis, [id_pessoa]);
+        const papeis = resultPapeis.rows.map(r => r.nome_papel);
+
+        const dadosSessao = JSON.stringify({
+            id_pessoa,
+            nome: nome_pessoa,
+            papeis
         });
 
-        return res.json({ status: 'ok', nome: nome_pessoa });
+        res.cookie('usuarioLogado', dadosSessao, {
+            sameSite: 'Lax',
+            secure: false,
+            httpOnly: true,
+            path: '/',
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+
+        return res.json({
+            status: 'ok',
+            id_pessoa,
+            nome: nome_pessoa,
+            papeis
+        });
 
     } catch (err) {
         console.error('Erro ao verificar senha:', err);
@@ -83,25 +102,30 @@ exports.logout = (req, res) => {
     res.json({ status: 'deslogado' });
 };
 
-// 🔹 Verifica se o usuário está logado (útil para proteger rotas)
+// 🔹 Verifica se o usuário está logado
 exports.verificaSeUsuarioEstaLogado = (req, res) => {
-    const nome = req.cookies.usuarioLogado;
+    const cookieBruto = req.cookies.usuarioLogado;
 
-    if (nome) {
-        res.json({ status: 'ok', nome });
-    } else {
-        res.json({ status: 'nao_logado' });
+    if (!cookieBruto) {
+        return res.json({ status: 'nao_logado' });
+    }
+
+    try {
+        const sessao = JSON.parse(cookieBruto);
+        res.json({ status: 'ok', ...sessao });
+    } catch {
+        res.json({ status: 'ok', nome: cookieBruto, papeis: ['cliente'] });
     }
 };
 
-// 🔹 Cadastro de nova pessoa (com hash de senha)
+// 🔹 ETAPA 3: Cadastro de nova pessoa (a trigger no Postgres já atribui papel 'cliente')
 exports.criarPessoa = async (req, res) => {
     try {
         const { nome_pessoa, email_pessoa, senha_pessoa } = req.body;
 
         if (!nome_pessoa || !email_pessoa || !senha_pessoa) {
-            return res.status(400).json({ 
-                error: 'Nome, email e senha são obrigatórios' 
+            return res.status(400).json({
+                error: 'Nome, email e senha são obrigatórios'
             });
         }
 
@@ -116,6 +140,9 @@ exports.criarPessoa = async (req, res) => {
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error('Erro ao criar pessoa:', error);
+        if (error.code === '23505') {
+            return res.status(400).json({ error: 'Este e-mail já está cadastrado.' });
+        }
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
 };

@@ -121,16 +121,20 @@ async function realizarLogin(event) {
 
         if (data.status === 'ok') {
 
-            // Salva o nome que já estava na tela ("Olá, Fulano") para exibir no menu
-            const textoSaudacao = document.getElementById('nomeUsuario').innerText;
-            const nomeLimpo = textoSaudacao.replace('Olá, ', '').trim();
-            localStorage.setItem('usuario_nome', nomeLimpo || email);
-            
-            // Se ele veio do carrinho clicando em "Comprar Agora", volta direto para o cardápio
+            // Salva os dados completos do usuário logado (id_pessoa, nome, papeis)
+            localStorage.setItem('usuario_sessao', JSON.stringify({
+                id_pessoa: data.id_pessoa,
+                nome: data.nome,
+                papeis: data.papeis || ['cliente']
+            }));
+
+            const ehAdmin = (data.papeis || []).some(p => p === 'gerente' || p === 'funcionario');
+
             if (localStorage.getItem('checkout_pendente') === 'true') {
                 window.location.href = '/menu.html';
+            } else if (ehAdmin) {
+                window.location.href = '/admin/admin.html';
             } else {
-                // Fluxo normal caso ele tenha entrado direto pelo login
                 window.location.href = '/menu.html';
             }
 
@@ -205,17 +209,13 @@ async function cadastrarUsuario() {
         const data = await response.json();
 
         if (response.ok) {
-
-            alert('Cadastro realizado com sucesso!');
-
-            inputEmail.value = email;
-
-            document.getElementById('nameCadast').value = '';
-
-            document.getElementById('senhaCadast').value = '';
-
-            mostrarCard('cardEmail');
-
+         alert('Cadastro realizado com sucesso! Agora digite sua senha para entrar.');
+         inputEmail.value = email;
+         document.getElementById('nomeUsuario').innerText = `Olá, ${nome}`;
+         document.getElementById('nameCadast').value = '';
+         document.getElementById('senhaCadast').value = '';
+         mostrarCard('cardSenha');
+        
         } else {
 
             alert(data.error || 'Erro ao realizar cadastro.');
